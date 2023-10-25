@@ -1,0 +1,70 @@
+\documentclass[letterpaper,11pt]{article}
+\usepackage[margin=1in]{geometry}
+
+\usepackage[utf8]{inputenc}
+\usepackage{tikz}
+\usepackage[appendix=inline]{apxproof}
+\usepackage{relsize}
+\usepackage{stackengine}
+\stackMath
+\usepackage{amsmath}
+\usepackage{mathtools}
+\usepackage{amssymb}
+\usepackage{todonotes}
+\usepackage{hyperref}
+\hypersetup{
+	    colorlinks,
+	    linkcolor={red!50!black},
+	    citecolor={blue!50!black},
+	    urlcolor={blue!30!black},
+	    breaklinks=true
+	    }
+\usepackage{cite}
+\usepackage{mathabx}
+\usepackage{stackengine}
+\stackMath
+\usepackage{lineno}
+\usepackage[strict]{changepage}
+\usepackage{nicefrac}
+\usepackage{natbib}
+
+\newtheoremrep{theorem}{Theorem}[section]
+\newtheorem{openpb}[theorem]{Open problem}
+\newtheorem{conjecture}[theorem]{Conjecture}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{remark}[theorem]{Remark}
+\newtheoremrep{proposition}[theorem]{Proposition}
+\newtheoremrep{lemma}[theorem]{Lemma}
+\newtheoremrep{example}[theorem]{Example}
+\newtheoremrep{definition}[theorem]{Definition}
+
+\newcommand{\ZZ}{\mathbb{Z}}
+\newcommand{\NN}{\mathbb{N}}
+
+\input{macros}
+
+\begin{document}
+
+\title{Automata, Decision Diagrams, and Circuits Circus}
+
+\author{Antoine Amarilli \and Marcelo Arenas \and YooJung Choi \and Weiming Feng \and Mikaël Monet \and Benjie Wang}
+
+\date{}
+\maketitle
+
+\section{Preliminaries}
+\input{prelims}
+
+\section{Decision Diagrams}
+\input{decision}
+
+\section{Circuits}
+\input{circuits}
+
+\section{Problems}
+\input{problems}
+
+\bibliographystyle{plainnat}
+\bibliography{references}
+
+\end{document}

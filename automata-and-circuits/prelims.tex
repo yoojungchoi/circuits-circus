@@ -1,0 +1,170 @@
+\subsection{Knowledge compilation classes}
+\label{subsec:KC}
+
+\paragraph*{Assignments and Boolean functions.}
+Let~$X$ be a finite set of variables.  An \emph{assignment of~$X$} is a
+function~$\nu: X \to \{0,1\}$. We denote by~$2^X$ the set of all assignments
+of~$X$.  A \emph{Boolean function over~$X$} is a function~$f:2^X\to \{0,1\}$.
+An assignment~$\nu \in 2^X$ is \emph{satisfying} if~$f(\nu) =1$ (also
+denoted~$\nu \models f$).  We denote by~$\sat(f)\subseteq 2^X$ the set of all
+satisfying assignments of~$f$, and~$\ssat(f)$ the size of this set.  
+
+\paragraph*{Deterministic and decomposable circuits.}
+Let~$C$ be a Boolean circuit over variables~$X$,
+featuring~$\land$,~$\lor$,~$\lnot$, and variable gates.\footnote{We allow
+unbounded-fanin~$\land$- and~$\lor$-gates, and also allow constant~$1$-gates
+and constant~$0$-gates as, respectively, $\land$-gates with no input
+and~$\lor$-gates with no inputs.} The circuit~$C$ represents a Boolean function
+over~$X$, with the usual semantics.  The size~$|C|$ of a circuit is its number
+of edges.  For a gate~$g$ of~$C$, we denote by~$\vars(g)$ the set of variables
+that have a directed path to~$g$ in~$C$, and we denote by~$C_g$ the Boolean
+circuit over~$X$ whose output gate is~$g$.  An $\land$-gate~$g$ of~$C$ is
+\emph{decomposable} if for every two input gates $g_1\neq g_2$ of~$g$ we
+have~$\vars(g_1) \cap \vars(g_2) = \emptyset$.  We call~$C$ \emph{decomposable}
+if each~$\land$-gate is.  An~$\lor$-gate~$g$ of~$C$ is \emph{deterministic} if
+for every pair~$g_1\neq g_2$ of input gates of~$g$, the Boolean functions
+over~$X$ captured by~$C_{g_1}$ and~$C_{g_2}$ are disjoint; that is, we
+have~$\sat(C_{g_1}) \cap \sat(C_{g_1}) = \emptyset$.  We call~$C$
+\emph{deterministic} if each~$\lor$-gate is.  A circuit is deterministic and
+decomposable (abbreviated d-D) if it is both deterministic and decomposable.  A
+circuit~$C$ is in \emph{negation normal form} (NNF) if negation gates are only
+applied to variables.  A DNNF (resp., d-DNNF) is a decomposable circuit (resp.,
+a d-D circuit) that is in NNF.
+
+\todo[inline]{Define v-trees and structured (d-)DNNFs ((d)-SDNNFs).}
+
+\paragraph*{Binary decision diagrams.}
+A \emph{non-deterministic binary decision diagram} (or \emph{nBDD}) on a
+(finite) set of variables~$X$ is a rooted DAG~$D$ with labels on edges and
+nodes, verifying: (i) there are exactly two leaves (also called \emph{sinks}),
+one being labeled by~$0$ (the \emph{$0$-sink}), the other one by~$1$ (the
+\emph{$1$-sink}); (ii) internal nodes are labeled either by~$\lor$ or by a
+variable of~$X$; and (iii) each internal node that is labeled by a variable has
+two outgoing edges, labeled~$0$ and~$1$.  The \emph{size}~$|D|$ of~$D$ is its
+number of edges.  Let~$\nu$ be a valuation of~$X$, and let~$\pi$ be a path
+in~$D$ from the root to a sink of~$D$.  We say that~$\pi$ is \emph{compatible}
+with~$\nu$ if for every node~$n$ of~$\pi$ that is labeled by a variable~$x$
+of~$X$, the path~$\pi$ goes through the outgoing edge of~$n$ labeled
+by~$\nu(x)$.  Observe that multiple paths might be compatible with~$\nu$,
+because no condition is imposed on nodes of the path that are labeled
+by~$\lor$; in other words, the behaviour at~$\lor$-nodes is non-deterministic.
+An nBDD~$D$ represents a Boolean function~$f$ on~$X$ defined as follows:
+for every valuation~$\nu$ of~$X$, if there exists a path~$\pi$ from the root to
+the~$1$-sink that is compatible with~$\nu$, then~$f(\nu)=1$, else~$f(\nu)=0$.
+An nBDD is \emph{unambiguous} when, for every valuation~$\nu$, there exists at
+most one path~$\pi$ from the root to the~$1$-sink that is compatible
+with~$\nu$.  A~\emph{BDD} is an nBDD that has no~$\lor$-nodes.
+
+	The most general form of nBDDs that we will consider are
+\emph{non-deterministic free binary decision diagrams} (\emph{nFBDDs}): they
+are nBDDs such that for every path from the root to a leaf, no two nodes of
+that path are labeled by the same variable.  We will also consider the class
+\emph{uFBDD} of unambiguous nFBDDs, and the class \emph{FBDD} of nFBDDs having
+no~$\lor$-nodes.
+
+	Finally, we will also consider the class of \emph{non-deterministic
+ordered binary decision diagram} (\emph{nOBDD}): these are nFBDDs~$O$ such that
+there exists a total order $\x = x_1, \ldots, x_n$ on~$X$ which
+\emph{structures}~$O$, i.e., for every path $\pi$ from the root of~$O$ to a
+leaf, the sequence of variables which labels the internal nodes of~$\pi$
+(ignoring $\lor$-nodes) is a subsequence of~$\x$.  We say that the
+nOBDD is \emph{structured by $\x$}.  We also define \emph{uOBDDs} as
+the unambiguous nOBDDs, and \emph{OBDDs} as the nOBDDs without any $\lor$-node.
+
+	We say that an nOBDD~$O$ is \emph{complete} when every path from the
+root of~$O$ to a sink tests all the variables. Assuming that nOBDDs/uOBDDs are
+complete is without loss of generality, since these can be completed in
+polynomial time:
+\begin{lemma}[Folklore]
+\label{lem:nOBDD-complete}
+Given as input a nOBDD (resp., uOBDD)~$O$ over variables~$X$, we can compute in
+polynomial time an equivalent nOBDD (resp., uOBDD)~$O'$ of size at most~$|O|
+\times (|X|+1)$ that is complete.
+\end{lemma}
+
+\subsection{Automata}
+\label{subsec:UFAs}
+
+\subsubsection{On words}
+\label{subsubsec:ufas-words}
+
+\paragraph*{Alphabets, words, languages.}
+An \emph{alphabet} is a finite set~$\Sigma$ of \emph{letters}.  A \emph{word
+on~$\Sigma$} is a finite (possibly empty) sequence $\w = w_1,\ldots,w_n$ of
+letters from~$\Sigma$; its \emph{length}~$|\w|$ is~$n$.  The set of all words
+over~$\Sigma$ is denoted by~$\Sigma^*$.  Given a word~$\w \in \Sigma^*$ and~$i
+\in \{0,\ldots,|\w|\}$, we denote by~$\w^{\leq i}$ (resp.,~$\w^{\geq i}$) the
+word~$w_1,\ldots,w_i$ (resp., the word~$w_i,\ldots,w_{|\w|}$).  A \emph{
+language} over~$\Sigma$ is a subset of~$\Sigma^*$. Given a language~$L$
+over~$\Sigma$, its \emph{complement}, denoted~$L^\complement$, is the
+language~$\Sigma^* \setminus L$.
+
+
+\paragraph*{Word automata.}
+A \emph{non-deterministic finite automaton} (NFA)~$\A = (Q,q_I,F,\delta)$
+over~$\Sigma$ consists in a finite set~$Q$ of \emph{states}, an \emph{initial
+state}~$q_I \in Q$, a set~$F \subseteq Q$ of \emph{accepting states}, and a
+\emph{transition function}~$\delta \subseteq Q \times \Sigma \times Q$.  A
+\emph{run of~$\A$ on a word~$\w\in \Sigma^*$} is a sequence of states~$\rho =
+q_0, q_1, \cdots, q_{|\w|}$ such that $(q_i, w_{i+1}, q_{i+1}) \in \delta$ for
+every~$i \in \{0,\ldots,|\w|-1\}$. We say that~$\rho$ \emph{starts at~$q_0$}
+and~\emph{ends at~$q_{|\w|}$}.  For a word~$\w$ and state~$q$, we denote
+by~$\delta^*(q,\w)$ the set of states~$q'$ such that there exists a run of~$\A$
+on~$\w$ starting at~$q$ and ending at~$q'$.  For a word~$\w$, we say that
+\emph{$\w$ is accepted by~$\A$} if~$\delta^*(q_I,\w) \cap F \neq \emptyset$.
+An \emph{accepting run} of~$\A$ on~$\w$ is a run of~$\A$ on~$\w$ that starts
+at~$q_I$ and ends in a final state.
+The \emph{language accepted by~$\A$}, denoted~$L(\A)$, is the set of words
+over~$\Sigma$ that are accepted by~$\A$.  Automaton~$\A$ is called
+\emph{unambiguous} (UFA) if for every word~$\w \in \Sigma^*$ there exist are
+most one accepting run of~$\A$ on~$\w$.
+We denote by~$\ufas(\Sigma)$ (resp., $\nfas(\Sigma)$) the set of UFAs (resp.,
+NFAs) over~$\Sigma$.  
+
+\subsubsection{On trees}
+\label{subsubsec:ufas-trees}
+
+\paragraph*{Trees.}
+Let~$\Sigma$ be an alphabet.  A \emph{$\Sigma$-tree $(T,\lambda)$} is a finite,
+rooted, ordered binary tree~$T$ (all internal nodes have exactly two children,
+and these are ordered) such that every node~$n$ of~$T$ is labeled by a
+letter~$\lambda(n) \in \Sigma$. We say that~$T$ is the \emph{skeleton}
+of~$(T,\lambda)$. We denote by~$\mathcal{T}(\Sigma)$ the set of
+all~$\Sigma$-trees. We define the notions of ($\Sigma$-)tree language
+over~$\Sigma$ and of complement of a tree language as expected.
+
+\paragraph*{Tree automata.}
+A \emph{non-deterministic bottom-up finite tree automaton} (NbFTA)~$\A =
+(Q,F,\Delta,\iota)$ over~$\Sigma$ consists in a finite set of
+\emph{states}~$Q$, a set~$F \subseteq Q$ of final states, an
+\emph{initialization function} $\iota \subseteq \Sigma \times Q$, a transition
+function $\Delta \subseteq Q \times Q \times \Sigma \times Q$.
+Let~$(T,\lambda)$ be a~$\Sigma$-tree.  A \emph{run of~$\A$ on $(T,\lambda)$} is
+a~$Q$-tree~$(T,\lambda')$ having same skeleton and such that:
+\begin{itemize}
+  \item for every leaf~$n$ of~$T$ we have that~$(\lambda(n),\lambda'(n))\in \iota$;
+  \item for every internal node~$n$ of~$T$, letting~$n_1,n_2$ be the (ordered) children of~$n$,
+        we have that $(\lambda'(n_1),\lambda'(n_1),\lambda(n),\lambda'(n)) \in \Delta$.
+\end{itemize}
+We say that run~$(T,\lambda')$ \emph{ends at state~$q$} when~$q = \lambda'(r)$
+for~$r$ the root of~$T$.  The run~$(T,\lambda')$ is \emph{accepted} if,
+letting~$n$ be the root of~$T$, we have~$\lambda'(n)\in F$. If there exists an
+accepting run of~$\A$ on~$(T,\lambda)$ then we say that~$(T,\lambda)$ is
+accepted by~$\A$. We define~$L(\A)$ as usual. Automaton~$\A$ is unambiguous (UbFTA) if
+for any~$\Sigma$-tree~$(T,\lambda)$, there exists at most one accepting run
+of~$\A$ on~$(T,\lambda)$.
+An NbFTA over~$\Sigma$ is strongly unambiguous if for every
+$\Sigma$-tree~$(T,\lambda)$ and state~$q \in Q$ there is at most one run
+of~$\A$ on~$(T,\lambda)$ that ends at~$q$.
+
+\begin{lemma}
+\label{lem:strong-uamb-trees}
+Given as input an NbFTA~$\A$ over~$\Sigma$, we can compute
+in linear time a strongly unambiguous NbFTA~$\A'$ such that~$L(\A) =
+L(\A')$.
+\end{lemma}
+\begin{proof}
+ clear 
+\end{proof}
+
+We denote by~$\ubftas(\Sigma)$ (resp., $\nbftas(\Sigma)$) the set of UbFTAs (resp., of NbFTAs) over~$\Sigma$.

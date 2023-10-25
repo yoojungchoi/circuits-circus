@@ -1,0 +1,54 @@
+\subsection{Words}
+For~$n\in \N$ we let~$\X_n$ be the set of variables~$\{x_1,\ldots,x_n\}$.  We
+will abuse notation and identify a word~$\w$ over~$\{0,1\}$ of length~$n$ with
+the corresponding valuation of~$\X_n$, and vice-versa.
+
+\begin{proposition}[Folklore]
+\label{prp:from-ufas-to-uobdds}
+Given as input a $\{0,1\}$-NFA~$\A$ and an integer~$n\in \mathbb{N}$, we can compute in polynomial time
+an nOBDD~$O$ over variables~$\X_n$ such that $\sat(O) = L(\A) \cap \{0,1\}^n$.
+Moreover, if~$A$ was unambiguous then~$O$ is an uOBDD.
+\end{proposition}
+\begin{proof}
+We first prove this for NFAs. Let~$\A = (Q,q_I,F,\delta)$ be a~$\{0,1\}$-NFA.
+For every state~$q$ of~$\A$ and~$i\in \{0,\ldots,n-1\}$ we have a node~$n_q^i$
+in~$O$ labeled by variable~$x_{i+1}$.  For~$i\in \{0,\ldots,n-2\}$ and
+state~$q$ of~$\A$ and~$a \in \{0,1\}$ we have an~$\lor$-node~$\lor_{q,a}^i$
+whose inputs are all the nodes $n_{q'}^{i+1}$ such that~$(q,a,q')$ is a
+transition of~$\A$, and we have an~$a$-labeled edge in~$O$ from~$n_q^i$
+to~$\lor_{q,a}^i$.  For all states~$q$ of~$\A$ and~$a \in \{0,1\}$, if there
+exists a transition~$(q,a,q')$ of~$\A$ such that~$q'$ is final then we have
+an~$a$-labeled edge between~$q_s^{n-1}$ and the~$1$-sink of~$O$, otherwise we
+have an~$a$-labeled edge between~$q_s^{n-1}$ and the~$0$-sink of~$O$. The root
+of~$\A$ is the node~$n_{q_I}^0$. This concludes the construction. Now, let~$\w
+\in \{0,1\}^n$.  It is easy to check by induction on~$i \in \{1,\ldots,n\}$
+that for every state~$q \in Q$, letting~$O_q^{n-i}$ be the sub-nOBDD rooted
+at~$n_q^{n-i}$, we have that~$\w \models O_q^{n-i}$ if and only
+if~$\delta^*(q,\w^{\geq n+1-i}) \in F$, hence that~$O$ satisfies the desired
+property.  
+Furtheremore, it is clear that if~$\A$ is unambiguous then so is~$O$.
+\end{proof}
+
+
+\begin{proposition}[Folklore]
+\label{prp:from-uobdds-to-ufas}
+Let~$O$ be an nOBDD over variables~$\X_n$. We can compute in polynomial time a~$\{0,1\}$-NFA~$\A$
+such that $L(\A) = \sat(O)$. Moreover, if~$O$ was unambiguous then so is~$\A$.
+\end{proposition}
+\begin{proof}
+First, we use Lemma~\ref{lem:nOBDD-complete} to complete~$O$; let us call~$O$
+again the resulting nOBDD.  For every node~$n$ of~$O$ we have a state~$q_n$
+in~$O$. The initial state of~$\A$ is~$q_r$, for~$r$ the root of~$O$. For every
+nodes~$n,n'$ of~$O$ and~$a\in \{0,1\}$, if there exists a path in~$O$ from~$n$
+to~$n'$ that starts with the~$a$-labeled outgoing edge of~$n$ and only goes
+through~$\lor$-nodes then we add the transition~$(q_n,a,q_{n'})$ to~$\A$. We
+have a unique final state~$q_F$ in~$\A$ and for every node~$n$ of~$O$ and~$a
+\in \{0,1\}$, if there exists a path in~$O$ from~$n$ to the~$1$-sink of~$O$
+that starts with the~$a$-labeled outgoing edge of~$n$ and only goes
+though~$\lor$-nodes then we add the transition~$(q_n,a,q_F)$ to~$\A$.  It is
+easy to check that~$\A$ satisfies the desired property and that it is
+unambiguous if~$O$ was.
+\end{proof}
+
+\subsection{Trees}
+TODO
