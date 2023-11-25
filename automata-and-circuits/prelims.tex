@@ -1,12 +1,15 @@
 \subsection{Knowledge compilation classes}
 \label{subsec:KC}
 
+We write set of variables with uppercase boldface letters, such as $\X,\Y,\Z$. We write single
+variables with uppercase non-bold letters, such as~$X\in \X, y\in \Y$, etc.
+
 \paragraph*{Assignments and Boolean functions.}
 Let~$X$ be a finite set of variables.  An \emph{assignment of~$X$} is a
-function~$\nu: X \to \{0,1\}$. We denote by~$2^X$ the set of all assignments
-of~$X$.  A \emph{Boolean function over~$X$} is a function~$f:2^X\to \{0,1\}$.
-An assignment~$\nu \in 2^X$ is \emph{satisfying} if~$f(\nu) =1$ (also
-denoted~$\nu \models f$).  We denote by~$\sat(f)\subseteq 2^X$ the set of all
+function~$\nu: X \to \{0,1\}$. We denote by~$\assign(\X)$ the set of all assignments
+of~$X$.  A \emph{Boolean function over~$X$} is a function~$f:\assign(\X)\to \{0,1\}$.
+An assignment~$\nu \in \assign(\X)$ is \emph{satisfying} if~$f(\nu) =1$ (also
+denoted~$\nu \models f$).  We denote by~$\sat(f)\subseteq \assign(\X)$ the set of all
 satisfying assignments of~$f$, and~$\ssat(f)$ the size of this set.  
 
 \paragraph*{Deterministic and decomposable circuits.}

@@ -1,0 +1,15 @@
+What is the complexity of testing in which class an input falls? e.g., given an nBDD, is it an uBDD?
+
+Here is what we figured out:
+
+\begin{itemize}
+\item Checking decomposability is easy
+\item Checking structuredness is easy. Related to the question of efficiently computing a v-tree of an input circuit, which is in PTIME (YooJung already has something that does it)
+\item Checking determinism is not straightforward:
+    \begin{itemize}
+        \item Given two OBDDs with different variable orders, it's NP-hard to test whether they are simultaneously satisfiable. The argument is that a 3-CNF with each variable occurring at most 3 times (any constant other than 3 also works) can be rewritten to one OBDD that just expresses the satisfying assignments but with each copy of the variable being distinguished (i.e., the formula is made read-once), and one OBDD that expresses that the copies of each variable are assigned in a consistent way.
+        \item Hence, even on a uBDD which is the disjunction of two OBDDs, it's coNP-hard to check determinism (=determinism of the output gate, which is the only one not known to be deterministic). So the same applies to a DNNF which is the disjunction of two dec-DNNFs of course.
+        \item By contrast given an nOBDD/DSDNNF, we can do it in PTIME: we can test all pairs of inputs of a OR-gate and conjoin them in PTIME and check satisfiability to see if there is a witness.
+        \item Last, on automata, checking if an input NFA or tree NFA is unambiguous is also PTIME. There is a bound on the size of a witnessing word by a product construction, so then you just unfold the automaton to that length and reduce to circuits. A simpler automaton-specific algorithm is known, at least for word automata and probably also for tree automata.
+    \end{itemize}
+\end{itemize}

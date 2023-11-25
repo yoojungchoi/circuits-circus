@@ -1,1 +1,92 @@
 \todo[inline]{YooJung \& Benjie}
+
+\subsection{Boolean Queries}
+% From Knowledge Compilation Map:
+Consider a Boolean function $f$ over a set of variables $X$. A query maps $f$ to an output as shown below:
+\begin{itemize}
+    \item Consistency: 1 if $\sat(f) \neq \emptyset$; 0 otherwise. \textit{(Satisfiability)}. 
+    \item Consistency of partial assignment: given $f$ and a partial assignment, decide if there is a model extending the partial assignment.
+    \item Validity: 1 if $\sat(f) = \assign(\X)$; 0 otherwise.
+    \item Clausal entailment given a clause (disjunction of literals) $\gamma$: 1 if for every $\nu\in\sat(f)$, $\nu\models\gamma$; 0 otherwise. (Term entailment reduces to literal entailment, which is clause entailment.)
+    \item Implicant given a term $\gamma$: 1 if $\sat(\gamma) \subseteq \sat(f)$; 0 otherwise. \yj{$\sat(\gamma)$ needs to be defined for variables $X$. Can alternatively define it in terms of assignments that model $\gamma$}
+    \item (Weighted) model counting given a weight function $w:\assign(\X)\to\ZZ$: $\sum_{\nu\in\sat(f)} w(\nu)$
+    \begin{itemize}
+        \item Model counting (i.e., all weights are 1): $\ssat(f)$
+        \item Often the weight of a model is defined as the product of weights of literals: $w(\nu)=\prod_{x\in X} w_{\nu(x)}$ \yj{Notation for literals using the valuation function?}
+\item Can assume wlog that the weights are nonnegative integers, up to renormalizing. Note that this amounts to probability computation
+    \end{itemize}
+    \item Equivalence of functions $f_1$ and $f_2$: 1 if $\sat(f_1)=\sat(f_2)$; 0 otherwise. \textit{(Equality)}
+    \item Sentential entailment of functions $f_1$ and $f_2$: 1 if $\sat(f_1)\subseteq\sat(f_2)$; 0 otherwise.
+    \item Model enumeration
+    \item PI (prime implicant) enumeration
+    \item MAJSAT: at least half of the assignments satisfy
+    % \item E-MAJSAT (given a subset of variables, is there an assignment such that, on the remaining of variables, at least half of the assignments satsify the formula), and max-sum (assuming we have a weight function, given a subset of variables, find the partial assignment of these variables maximizing the sum of the satisfying assignments of the entire circuit which are compatible with the partial assignment).
+    \item Find the satisfying assignment of maximal weight / non-satisfying assignment of maximal weight. Caution: it's different from MAX-SAT on CNF (satisfying the maximal number of clauses). Note that a special case of this is ``find a minimal model''.
+    \item Ranked enumeration of satisfying assignments
+\end{itemize}
+
+\paragraph*{Probabilistic variants}
+What if we relax tasks like ``equivaence of functions'' to be approximate, e.g., with probability $1-\delta$? TODO
+
+\subsection{Operations/Transformations}
+\label{sec:operations}
+
+
+\begin{table}[]
+\centering
+\begin{tabular}{@{}llll@{}}
+\toprule
+\textbf{Operation} & \textbf{Boolean}         & \textbf{Probabilistic} & \textbf{Database} \\ \midrule
+$\formula | \varsubsetval$        & Conditioning             & Evidence/Instantiation & Selection         \\
+$\exists \varsubset. \formula$                   & Forgetting (Existential Quantification)               & Marginalization        & Projection        \\
+$\formula_1 \wedge \formula_2$                     & Conjunction              & Product                & Join              \\
+$\formula_1 \vee \formula_2$                  & Disjunction              & Sum/Max                & Union             \\
+$\neg \formula_1$                   & Negation                 & ?                      & Negation          \\
+$\forall \varsubset. \formula$                     & Universal Quantification & ?                      &   ?                \\ \bottomrule
+\end{tabular}
+\label{tbl:operations}
+\caption{Operations}
+\end{table}
+
+We now define operations on Boolean functions. The key distinction between an operation and a query is that an operation maps Boolean function(s) to another Boolean function, as opposed to a scalar output.
+
+\begin{definition}[Operation]
+    A $n$-ary operation is a mapping $\op: \mathcal{F}^n \to \mathcal{F}$ where $\mathcal{F}$ is the set of Boolean functions over variables $\X$.
+\end{definition}
+
+\begin{definition}[Tractable Operation]
+    A $n$-ary operation is tractable for input classes $\circuitclass_1, ... \circuitclass_n$ and output class $\circuitclass$ if there exists an algorithm (TODO: tractable algorithm?)
+    that maps any $\circuit_1 \in \circuitclass_1, ..., \circuit_n \in \circuitclass_n$ to $\circuit \in \circuitclass$ such that $\circuit$ is logically equivalent to $\op(\circuit_1, ..., \circuit_n)$.
+
+    TODO: change to have just one class
+\end{definition}
+
+In Table \ref{tbl:operations}, we provide a list of common operations on Boolean functions. It is worth noting that there are analogous operations on probabilistic circuits and on databases; we provide a translation in the Table. g
+
+%Boolean  \textit{(Probabilistic)} \textbf{(DB)}
+% \begin{itemize}
+%     \item Conditioning \textit{(Evidence/Instantiation)} \textbf{(Selection)} (in particular setting a variable to a value; related to self-reducibility)
+%     \item Forgetting \textit{(Marginalization)} \textbf{(Projection)}
+%     \item Singleton forgetting (aka bounded forgetting): forget one variable
+%     \item Conjunction \textit{(Product)} \textbf{(Join)} 
+%     \item Bounded conjunction
+%     \item Disjunction \textit{(Sum, max?)} \textbf{(Union)}
+%     \item Bounded disjunction
+%     \item Negation \textit{(? maybe $1-p$?)} \textbf{(Negation)}
+%     \item Universal Quantification?
+% \item Transform a circuit to the circuit of its minimal models
+% \end{itemize}
+
+
+
+\subsection{Translations: Comparison between classes}
+
+TODO? It's the special case of tractable operation when the 1-ary operation is the identity.
+
+%\subsection{New content}
+
+%1) Translation between classes (e.g. preserving properties you need). E.g. what is the "most general" input circuit class which guarantees an output class for an operation? 
+% 2) Compositional queries?
+% 3) Any automata-specific queries/operations
+% MAX/MAP vs Counting: in decomposable Boolean circuits former is tractable, in decomposable arithmetic circuits latter is tractable.
+

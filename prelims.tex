@@ -1,0 +1,22 @@
+We write sets of variables with uppercase boldface letters, such as $\X,\Y,\Z$, and single
+variables with uppercase non-bold letters, such as~$X\in \X, Y\in \Y$, etc.
+
+\paragraph*{Assignments and Boolean functions.}
+Let~$\X$ be a finite set of variables.  An \emph{assignment of~$\X$} is a
+function~$\ba: \X \to \{0,1\}$. We denote by~$\assign(\X)$ the set of all assignments
+of~$\X$.  A \emph{Boolean function over~$\mathbf{X}$}
+is a function~$f\colon \assign(\X)\to \{0,1\}$.
+An assignment~$\ba$ of $\mathbf{X}$ is \emph{satisfying} if~$f(\ba) =1$ (also
+denoted~$\ba \models f$).  We denote by~$\sat(f)\subseteq \assign(\X)$ the set of all
+satisfying assignments of~$f$, and~$\ssat(f)$ the size of this set. 
+%\yj{How about something like Models instead of SAT for the set of models?}
+
+
+% \comm{Marcelo}{Notation $\x(X)$ has to be used to indicate the value of assignment $\x$ for variable $X$. This doesn't look very nice, could we use something like $\as$ for an assignment?}
+% \comm{Antoine}{We move to $a$ and $\mathbf{a}$}
+% M: doing this
+
+\paragraph*{CNFs and DNFs.}
+TODO clauses, terms, CNFs, DNFs
+
+TODO prime implicant (PI)

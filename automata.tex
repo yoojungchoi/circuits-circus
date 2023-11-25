@@ -1,0 +1,378 @@
+Here, mention $k$-ambiguity, and mention revelant separation results.
+
+Mention the Göös results and how they do not translate to diagrams
+
+
+\subsection{On words}
+\label{subsubsec:ufas-words}
+
+\paragraph*{Alphabets, words, languages.}
+An \emph{alphabet} is a finite set~$\Sigma$ of \emph{letters}.  A \emph{word
+on~$\Sigma$} is a finite (possibly empty) sequence $\w = w_1,\ldots,w_n$ of
+letters from~$\Sigma$; its \emph{length}~$|\w|$ is~$n$.  The set of all words
+over~$\Sigma$ is denoted by~$\Sigma^*$.  Given a word~$\w \in \Sigma^*$ and~$i
+\in \{0,\ldots,|\w|\}$, we denote by~$\w^{\leq i}$ (resp.,~$\w^{\geq i}$) the
+word~$w_1,\ldots,w_i$ (resp., the word~$w_i,\ldots,w_{|\w|}$).  A \emph{
+language} over~$\Sigma$ is a subset of~$\Sigma^*$. Given a language~$L$
+over~$\Sigma$, its \emph{complement}, denoted~$L^\complement$, is the
+language~$\Sigma^* \setminus L$.
+
+
+\paragraph*{Word automata.}
+A \emph{non-deterministic finite automaton} (NFA)~$\A = (Q,q_I,F,\delta)$
+over~$\Sigma$ consists in a finite set~$Q$ of \emph{states}, an \emph{initial
+state}~$q_I \in Q$, a set~$F \subseteq Q$ of \emph{accepting states}, and a
+\emph{transition relation}~$\delta \subseteq Q \times \Sigma \times Q$.  A
+\emph{run of~$\A$ on a word~$\w\in \Sigma^*$} is a sequence of states~$\rho =
+q_0, q_1, \cdots, q_{|\w|}$ such that $(q_i, w_{i+1}, q_{i+1}) \in \delta$ for
+every~$i \in \{0,\ldots,|\w|-1\}$. We say that~$\rho$ \emph{starts at~$q_0$}
+and~\emph{ends at~$q_{|\w|}$}.  For a word~$\w$ and state~$q$, we denote
+by~$\delta^*(q,\w)$ the set of states~$q'$ such that there exists a run of~$\A$
+on~$\w$ starting at~$q$ and ending at~$q'$.  For a word~$\w$, we say that
+\emph{$\w$ is accepted by~$\A$} if~$\delta^*(q_I,\w) \cap F \neq \emptyset$.
+An \emph{accepting run} of~$\A$ on~$\w$ is a run of~$\A$ on~$\w$ that starts
+at~$q_I$ and ends in a final state.
+The \emph{language accepted by~$\A$}, denoted~$L(\A)$, is the set of words
+over~$\Sigma$ that are accepted by~$\A$.  The automaton~$\A$ is called
+\emph{unambiguous} (UFA) if for every word~$\w \in \Sigma^*$ there exist at
+most one accepting run of~$\A$ on~$\w$.
+%We denote by~$\ufas(\Sigma)$ (resp., $\nfas(\Sigma)$) the set of UFAs (resp.,
+%NFAs) over~$\Sigma$.  
+For $k \in \mathbb{N}$, we call the automaton $\A$ \emph{$k$-unambiguous} ($k$-UFA) if for every word $\w in \Sigma^*$ there exist  at most $k$ accepting runs of $\A$ on~$\w$; so $A$ is unambiguous iff it is $1$-unambiguous.
+
+We say the automaton $\A$ is \emph{deterministic} (DFA) if, for every state $q\in Q$ and letter $a \in \Sigma$, there is at most one state $q' \in Q$ such that the transition $(q, a, q')$ is in~$\delta$. In this case, we can equivalently see $\delta$ as a partial function from $Q \times \Sigma$ to~$Q$.
+Note that a deterministic automaton is necessarily unambiguous, but the converse is not true: there are some unambiguous automata which are not deterministic.
+
+We say that a word automaton $\A$ is \emph{trimmed} if, for every state $q\in Q$, there is a word $\w$ in the language of $\A$ such that $q$ occurs in a run $\rho$ of $\A$ on~$\w$. Given a word automaton $\A$, we can clearly convert it in linear time to a trimmed automaton which is equivalent (i.e., that recognizes the same language), and this conversion preserves unambiguity, $k$-unambiguity, and determinism.
+
+TODO define $|\A|$, for words and for trees.
+
+\subsection{On trees}
+\label{subsubsec:ufas-trees}
+
+\paragraph*{Trees.}
+Let~$\Sigma$ be an alphabet.  A \emph{$\Sigma$-tree $(T,\lambda)$} is a finite,
+rooted, ordered binary tree~$T$ (all internal nodes have exactly two children,
+and these are ordered) such that every node~$n$ of~$T$ is labeled by a
+letter~$\lambda(n) \in \Sigma$. We say that~$T$ is the \emph{skeleton}
+of~$(T,\lambda)$. We denote by~$\mathcal{T}(\Sigma)$ the set of
+all~$\Sigma$-trees. We define the notions of ($\Sigma$-)tree language
+over~$\Sigma$ and of complement of a tree language as expected.
+
+\paragraph*{Tree automata.}
+A \emph{non-deterministic bottom-up finite tree automaton} (NbFTA)~$\A =
+(Q,F,\Delta,\iota)$ over~$\Sigma$ consists in a finite set of
+\emph{states}~$Q$, a set~$F \subseteq Q$ of final states, an
+\emph{initialization function} $\iota \subseteq \Sigma \times Q$, and a transition
+relation $\Delta \subseteq Q \times Q \times \Sigma \times Q$.
+Let~$(T,\lambda)$ be a~$\Sigma$-tree.  A \emph{run of~$\A$ on $(T,\lambda)$} is
+a~$Q$-tree~$(T,\lambda')$ having same skeleton and such that:
+\begin{itemize}
+  \item for every leaf~$n$ of~$T$ we have that~$(\lambda(n),\lambda'(n))\in \iota$;
+  \item for every internal node~$n$ of~$T$, letting~$n_1,n_2$ be the (ordered) children of~$n$,
+        we have that $(\lambda'(n_1),\lambda'(n_1),\lambda(n),\lambda'(n)) \in \Delta$.
+\end{itemize}
+We say that run~$(T,\lambda')$ \emph{ends at state~$q$} when~$q = \lambda'(r)$
+for~$r$ the root of~$T$.  The run~$(T,\lambda')$ is \emph{accepted} if,
+letting~$n$ be the root of~$T$, we have~$\lambda'(n)\in F$. If there exists an
+accepting run of~$\A$ on~$(T,\lambda)$ then we say that~$(T,\lambda)$ is
+accepted by~$\A$. We define~$L(\A)$ as usual. Automaton~$\A$ is \emph{unambiguous} (UbFTA) if
+for any~$\Sigma$-tree~$(T,\lambda)$, there exists at most one accepting run
+of~$\A$ on~$(T,\lambda)$.
+For $k \in \mathbb{N}$, we say that $\A$ is \emph{$k$-unambiguous} ($k$-UbFTA) if the same holds but there are at most $k$ accepting runs; so $1$-unambiguity is equivalent to unambiguity.
+
+We say that $\A$ is a \emph{deterministic bottom-up finite tree automaton}
+(DbFTA) if, for each pair of states $(q_1, q_2) \in Q$ and letter $a \in
+\Sigma$, there is at most one state $q$ such that $(q_1, q_2, a, q) \in \delta$.
+In this case, we can equivalently see $\delta$ as a partial function from $Q
+\times Q \times \Sigma$ to $Q$.
+
+We say that $\A$ is \emph{trimmed} if, for every state $q \in Q$, there is a
+$\Sigma$-tree $(T,\lambda)$ in the language accepted by $\A$ and a run $\rho$ of
+$\A$ on $(T, \lambda)$ in which $q$ appears. Given a tree automaton, we can
+convert it in linear time to an automaton which is equivalent (recognizes the
+same language) and is trimmed, and this conversion preserves unambiguity,
+$k$-unambiguity, and determinism.
+
+Note that a trimmed UbFTA $\A$ over~$\Sigma$ satisfies the following stronger
+property (*):
+%is \emph{strongly unambiguous} if 
+for every
+$\Sigma$-tree~$(T,\lambda)$ and state~$q \in Q$ there is at most one run
+of~$\A$ on~$(T,\lambda)$ that ends at~$q$. This property may not be satisfied if
+$\A$ is not trimmed if $q$ is not final and informally cannot lead to a finite
+state.
+
+\subsection{Computing circuits from automata}
+
+We now explain how to compute a circuit from an automaton. We first give the
+construction for the most general formalism possible (tree automata without any
+restrictions), before specializing it and noticing the resulting properties on
+the circuit. All the circuits that we construct will be decomposable and in
+negation normal form (DNNF), and they were all be structured (for circuits) or
+ordered (for decision diagrams).
+
+We assume that the alphabet used by automata is $\Sigma = \{0, 1\}$; we will
+later explain why other alphabets can also be handled.
+
+\begin{definition}
+  Let $\A$ be a FWA over alphabet $\Sigma = \{0, 1\}$, and let $n \in \NN$. The
+  \emph{provenance} of~$\A$ on~$n$ is a Boolean function $\phi_{\A, n}$
+  over variables
+  $\X = \{x_1, \ldots, x_n\}$ such that, for any assignment $\ba$
+  of~$\X$, letting $w_\ba$ be the corresponding word of length $n$ over
+  $\Sigma$, we have that $\ba$ satisfies $\phi_{\A, n}$ iff $\A$ accepts $w_\ba$.
+  A \emph{provenance circuit} of~$\A$ on~$n$ is a circuit representing
+  $\phi_{\A, n}$.
+
+  Likewise, if $\A$ is a bFTA over alphabet $\Sigma = \{0, 1\}$ and $T$ is an
+  unlabeled full binary tree, the \emph{provenance} of~$\A$ on~$T$ is a Boolean
+  function $\phi_{\A, T}$ whose variables $\X$ are the nodes of~$T$ such that,
+  for any assignment $\ba$ of~$\X$, letting $T_\ba$ be the $\Sigma$-tree
+  obtained from~$T$ by labeling the nodes according to~$\ba$, we have that $\ba$
+  satisfies $\phi{\A, T}$ iff $\A$ accepts $T_\ba$. We define a \emph{provenance
+  circuit} in the expected way.
+\end{definition}
+
+We show in this section the following two results on word automata and tree
+automata:
+
+\begin{proposition}
+  \label{prp:wordprov}
+  Let $\A$ be a FWA over alphabet $\Sigma = \{0, 1\}$ and let $n \in \NN$. We
+  can build in time $O(|\A| \times n)$ a provenance circuit $C$ of~$\A$ on~$n$
+  which is an nOBDD with variable order $x_1, \ldots, x_n$.
+  Further, if $\A$ is unambiguous then $C$ is an uOBDD, and if $\A$ is
+  deterministic then $C$ is an OBDD.
+\end{proposition}
+
+\begin{proposition}
+  \label{prp:treeprov}
+  Let $\A$ be a bFTA over alphabet $\Sigma = \{0, 1\}$ and let $T$ be an
+  unlabeled full binary tree. We
+  can build in time $O(|\A| \times |T|)$ a provenance circuit $C$ of~$\A$ on~$n$
+  which is a structured DNNF (SDNNF), together with its vtree.
+  Further, if $\A$ is unambiguous then $C$ is a d-SDNNF.
+\end{proposition}
+
+TODO: no correspondence when $\A$ is deterministic, except the weird notion of
+``upwards-determinism'' from \cite{amarilli2017circuit}...
+
+We briefly comment on the relationship of these results
+to~\cite{amarilli2015provenance}. In the latter work, the provenance for
+automata is defined on an alphabet consisting of a fixed part together with a
+Boolean annotation. For instance, for word automata, the alphabet is $\Sigma
+\times \{0, 1\}$, and the provenance is defined on an input word of~$\Sigma^*$,
+to describe which of the Boolean annotations of the word are accepted. The
+results above, with alphabet $\{0, 1\}$, allow us to recapture this setting.
+Indeed, we can modify automata working on a larger alphabet to first read a
+binary representation of their letter followed by the Boolean annotation.
+Applying the results above, and fixing the inputs corresponding to letters to
+the intended values, gives us the provenance circuit in the sense
+of~\cite{amarilli2015provenance}. This uses the tractability of setting a
+variable to a value, aka conditioning (see Section~\ref{sec:operations})
+
+We first prove Proposition~\ref{prp:wordprov} as a warmup:
+
+\begin{proof}[Proof of Proposition~\ref{prp:wordprov}]
+  We assume that the input automaton $\A$ is \emph{complete} in the sense that,
+  for every state $q$ and every letter $b \in \Sigma$, there is at least one
+  transition for letter $b$ on state~$q$. We can clearly make $\A$ complete in
+  linear time up to adding a sink state.
+
+  We build a diagram with decision nodes $n_{i,q}$ for each $1 \leq i \leq n$ and
+  for each state~$q$, each being a decision on variable $x_i$.
+  The initial node will be $g_{1, q_I}$ for $q_I$ the
+  initial state of the automaton. We also have sinks $n_{n+1,q}$ for each
+  state~$q$: they
+  are 0-sinks for non-final $q$ and 1-sinks for final~$q$.
+
+  Now, for every $1 \leq i \leq n$, we add the following edges: for each
+  transition from a state $q$ to state $q'$ when reading symbol $b \in \Sigma$,
+  we add an edge to $n_{i,q}$ labeled~$b$ to $n_{i+1,q'}$.
+
+  The construction satisfies the time bound. We modify the result in linear time
+  to trim it, removing all nodes that do not have a path from the starting node.
+  The result is an nOBDD, because
+  each decision node has at least one outgoing 0-edge and 1-edge, and the
+  variables are ordered in the right way. Note that it is also complete in the
+  sense that it tests all of its variables (TODO define if not defined).
+
+  We show correctness by finite induction: for every $0 \leq i \leq n$, given
+  a word $w$ of length $i$, the reachable nodes $n_{i,q}$ by the partial
+  valuation corresponding to~$w$ are those for the states $q$ that we can reach
+  when reading~$w$. The base case is immediate: when reading the empty word, we
+  can get precisely to the initial state. Now, for the induction step, if the
+  states that we can reach when reading a word of length $i$ are correct, then
+  when reading an extra letter $b \in \Sigma$ we can go precisely to the states
+  having a transition labeled $b$ from the previously reachable states, so the
+  result is correct. The finite induction applied to $i=n$ confirms that we can
+  reach a final state (i.e., the word is accepted) iff we can reach a 1-sink.
+
+  Now, observe that if the automaton is unambiguous, then for any valuation
+  there is at most one way to reach the 1-sink, because there is at most one
+  accepting run of the automaton on the corresponding word. Further, if the
+  automaton is deterministic, then for any valuation there is at most one
+  consistent path, because each decision node has at most one outgoing 0-edge
+  and 1-edge.
+\end{proof}
+
+We next prove Proposition~\ref{prp:treeprov}. To do this, we first need to do a
+small adjustment: v-trees are defined so that the variables are at the leaves,
+but tree automata read labels on all tree nodes, including internal nodes.
+
+\begin{definition}
+  Let $T$ be a finite rooted ordered binary tree with nodes $N$. Its
+  \emph{leaf-push}
+  is the finite rooted ordered binary tree $T'$ obtained as follows: replace
+  each internal node $n$ with children $n_1$ and $n_2$ by an internal node $n'$
+  having as children one leaf $n$ and an internal node $n''$ having as children
+  $n_1$ and $n_2$.
+
+  Note that the leaves of $T'$ are precisely in bijection with the nodes of~$T$.
+\end{definition}
+
+\begin{proof}[Proof of Proposition~\ref{prp:treeprov}]
+  We do not assume this time that the input tree automaton $\A$ is complete, but
+  must instead assume that it is \emph{trimmed}, so as to satisfy property (*)
+  above \comm{antoine}{note: this difference with the case of word automata is a bit
+  inelegant}
+
+  We build a circuit with $\lor$-gates $g_{n,q}$ for each tree node~$n$ of the
+  input tree~$T$.
+  The output gate will be a $\lor$-gate $g$ doing the disjunction of all the
+  $g_{r,q}$ for $q$ final and for $r$ the root of~$T$.
+
+  Now, for every leaf $n$ of the input tree~$T$, we add
+  a variable gate for~$n$ as an input of the gate $g_{n,q}$ for each $q \in \iota(1)$, and
+  we add a gate for the negation of~$n$ as an input of the gate $g_{n,q}$ for
+  each $q \in \iota(0)$.
+
+  For every internal node $n$ of the input tree $T$ with children $n_1$ and
+  $n_2$, for every pair of states $q_1$ and $q_2$, for every $b \in \{0, 1\}$,
+  for every state $q$ having a transition from $q_1, q_2, b$, we add as input to
+  $g_{n,q}$ a $\land$-gate having as first input either $n$ or $\neg n$
+  depending on whether $b=1$ or $b=0$, and as second input a $\land$-gate having
+  as first input $g_{n_1,q_1}$ and as second input $g_{n_2,q_2}$.
+
+  The construction satisfies the time bound. TODO trim if necessary. Note that
+  the circuit is clearly in NNF. We claim that it is decomposable, and that it
+  is structured by a v-tre which is the leaf-push of the tree~$T$. Indeed, we
+  can easily show by bottom-up induction that the domain of each gate $g_{n,q}$
+  is a subset of the nodes of the subtree of~$T$ rooted at~$n$ (including~$n$),
+  so that the $\land$-gates are indeed structured according to the leaf-push
+  (TODO details if necessary).
+  Note that the circuit is smooth (TODO define if not defined) if we remove the
+  unsatisfiable gates.
+
+  We show correctness again by finite induction: for every tree node~$n$ of~$T$, given
+  a labeling of the subtree~$T_n$ of~$T$ rooted at~$n$,
+  the gates $g_{n,q}$ satisfied by the corresponding partial valuation are
+  precisely those for the states $q$ that we can reach
+  when reading the labeling of~$T_n$ in~$\A$.
+  The base case corresponds to leaves, where indeed the gates $g_{n,q}$ that are
+  satisfied follow the initial function $\iota$ (TODO details).
+
+  Now, for the induction step, considering an internal node~$n$ of~$T$ with
+  children $n_1$ and $n_2$, if we assume that the
+  states that we can reach when reading a labeling $\lambda_1$ of the tree
+  $T_{n_1}$ and when reading a labeling $\lambda_2$ of the tree $T_{n_2}$ are
+  correct, let us show the same when reading a labeling $\lambda$ of~$T_n$
+  defined as $\lambda_1$ on~$T_{n_1}$ and $\lambda_2$ on $T_{n_2}$ and $b \in
+  \Sigma$ on~$n$. The gates $g_{n,q}$ that are satisfied are precisely those for
+  which there is a transition from $q_1$ and $q_2$ and $b$ to~$q$ and
+  $g_{n_1,q_1}$ and $g_{n_2,q_2}$ are satisfied, allowing us to conclude from
+  the induction hypothesis (TODO details). Hence, using the induction result on
+  the root $r$ of~$T$ (where $T_r = T$), we conclude that the output gate of the
+  circuit is true on a valuation iff there is a final state of~$\A$ that we can
+  reach on the labeling of~$T$ according to this valuation.
+
+  Now, observe that if the automaton is unambiguous, then each $\lor$-gate is
+  deterministic. Indeed, if the output gate had two inputs that are mutually
+  satisfiable, then it witnesses the existence of a labeling of the tree~$T$
+  on which $\A$ reaches two different final states, contradicting the
+  unambiguity of~$\A$. Likewise, if a gate $g_{n,q}$ has two inputs that are
+  mutually satisfiable, as they are satisfied by the same valuation the literal
+  on~$n$ must be the same so it must be the case that we can simultaneously
+  satisfy $g_{n_1, q_1}$ and $g_{n_2, q_2}$, and $g_{n_1,q_1'}$ and
+  $g_{n_2,q_2'}$, for two 2-tuples $(q_1,q_2) \neq (q_1',q_2')$. This witnesses
+  that, on this labeling of~$T_n$, the automaton has two distinct runs leading
+  to state~$q$ at the root. This is a contradiction of property (*).
+\end{proof}
+
+\subsection{From DNFs to automata}
+
+We last mention a result of a different kind about the translation from Boolean
+formalisms to automata formalisms: given a DNF, we can easily translate them to
+a (non-deterministic) automaton checking that they are satisfied. (TODO) If the
+DNF is unambiguous (TODO define), then the automaton also is.
+
+\subsection{k-unambiguity}
+
+Motivated by the natural definition of $k$-unambiguity for automata on words on
+trees, we can define a similar notion for diagrams and circuits.
+
+\begin{definition}
+  An nOBDD (TODO: without order?) is \emph{$k$-unambiguous} for $k\in\NN$,
+  called an \emph{$k$-uOBDD}, if for every valuation there is at most $k$
+  distinct paths going from the initial node to a 1-sink. In particular, a
+  $1$-uOBDD is exactly an uOBDD.
+\end{definition}
+
+For circuits, this is a bit less pleasant, and we must define a \emph{trace} of
+a circuit:
+
+\begin{definition}
+  A \emph{trace} of a DNNF $C$ is a DAG defined in the following inductive way:
+  \begin{itemize}
+    \item The output gate of~$C$ is the root of the trace
+    \item For every $\land$-gate $g$ with 2 inputs which is in the trace, both
+      of the inputs are in the trace.
+    \item For every $\lor$-gate $g$, exactly one of its inputs is in the trace.
+      (In particular, a $\lor$-gate with no inputs cannot occur in the trace.)
+  \end{itemize}
+  The trace is \emph{consistent} with a valuation if the literals that it
+  contains as leaves are consistent with the valuation (TODO tidy up).
+\end{definition}
+
+Note that, for every valuation, if the circuit has a trace for that valuation
+then it is a satisfying valuation: the trace witnesses that the circuit
+evaluates to true. Conversely, given a satisfying valuation, we can
+build a trace by selecting gates that evaluate to true under the
+valuation.
+
+Further, let us now assume that the circuit is \emph{trimmed} in the following
+sense \comm{antoine}{Push up}:
+\begin{itemize}
+  \item Every gate has a directed path to the output
+  \item There are no unsatisfiable gates
+\end{itemize}
+(Note that this imposes that the circuit is satisfiable)
+Then, given a valuation and a gate $g$ of the circuit, we
+can build a partial trace for that valuation rooted at~$g$ iff $g$ evaluates to
+true under the valuation.
+We claim that a DNNF is deterministic iff, for every valuation, it has at most
+one trace. Indeed, if it is deterministic, then for every $\lor$-gate in the
+trace we have only one true input to select. Conversely, if there is a valuation
+and gate $g$ witnessing a violation of determinism, then we have two distinct
+partial traces rooted at~$g$, and we can conclude that there are two distinct
+traces of the circuit using the directed path from~$g$ to the output: note that
+when we traverse a $\land$-gate then its other input is satisfiable because the
+circuit is trimmed, and thanks to decomposability we can freely choose the
+valuation of the variables that will make this other input satisfied.
+
+\begin{definition}
+  A trimmed DNNF is \emph{$k$-deterministic} (or \emph{$k$-d-DNNF})
+  for $k \in \NN$ if, for every assignment, it has at most $k$ traces.
+\end{definition}
+
+With these notions, the statements of Proposition~\ref{prp:wordprov} and
+Proposition~\ref{prp:treeprov} can be extended to say that a $k$-unambiguous
+automata gets converted to a $k$-uOBDD (for words) or $k$-d-DNNF (for trees).
+(TODO)
+
+\subsection{Normal form and width}
+
+TODO: Mention the definition of width for diagrams and for circuits, and the
+normal form where ANDs and ORs alternate.
+

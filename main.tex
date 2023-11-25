@@ -19,7 +19,6 @@
 	    urlcolor={blue!30!black},
 	    breaklinks=true
 	    }
-\usepackage{cite}
 \usepackage{mathabx}
 \usepackage{stackengine}
 \stackMath
@@ -27,6 +26,15 @@
 \usepackage[strict]{changepage}
 \usepackage{nicefrac}
 \usepackage{natbib}
+\usepackage{xspace}
+\usepackage{multirow}
+\usepackage{colonequals}
+\usepackage{booktabs}
+\usepackage{bm}
+\usepackage{tikz}
+\usetikzlibrary{arrows,positioning}
+\usepackage{subcaption}
+\usepackage{graphicx}
 
 \newtheoremrep{theorem}{Theorem}[section]
 \newtheorem{openpb}[theorem]{Open problem}
@@ -40,6 +48,8 @@
 
 \newcommand{\ZZ}{\mathbb{Z}}
 \newcommand{\NN}{\mathbb{N}}
+
+\newcommand{\yj}[1]{\textbf{\textcolor{purple}{{YJ: #1}}}}
 
 \input{macros}
 
@@ -61,8 +71,17 @@
 \section{Circuits}
 \input{circuits}
 
-\section{Problems}
+\section{Problem definitions}
 \input{problems}
+
+\section{Results on these problems}
+\input{results}
+
+\section{Automata}
+\input{automata}
+
+\section{Testing membership}
+\input{membership}
 
 \bibliographystyle{plainnat}
 \bibliography{references}

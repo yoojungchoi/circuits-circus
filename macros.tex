@@ -1,0 +1,109 @@
+\newcommand\vars{\mathsf{Vars}}
+\newcommand\sat{\mathsf{Models}}
+\newcommand\ssat{\#\mathsf{Models}}
+\newcommand\var{\mathsf{Var}}
+\newcommand\assign{\mathsf{Assign}}
+\newcommand{\formula}{\Sigma}
+\newcommand{\varsubset}{\bm{W}}
+\newcommand{\varsubsetval}{\bm{w}}
+
+\newcommand{\rvars}[1]{\ensuremath{\mathbf{#1}}\xspace}
+\newcommand{\X}{\rvars{X}}
+\newcommand{\Y}{\rvars{Y}}
+\newcommand{\Z}{\rvars{Z}}
+
+\newcommand{\op}{O}
+
+\newcommand{\jstate}[1]{\ensuremath{\mathbf{#1}}\xspace}
+\newcommand{\x}{\jstate{x}}
+\newcommand{\y}{\jstate{y}}
+
+\newcommand{\circuitclass}{\mathcal{C}}
+\newcommand{\circuit}{C}
+
+\newcommand{\comm}[2]{\todo[inline]{{\bf #1}: #2}}
+\newcommand{\mikael}[1]{\comm{Mikaël}{#1}}
+
+\usetikzlibrary{shapes}
+\tikzset{
+	rect/.style={
+		rectangle,
+		rounded corners,
+		draw=black, 
+		thick,
+		text centered},
+	rectw/.style={
+		rectangle,
+		rounded corners,
+		draw=white, 
+		thick,
+		text centered},
+	sq/.style={
+		rectangle,
+		draw=black, 
+		thick,
+		text centered},
+	sqw/.style={
+		rectangle,
+		thick,
+		text centered},
+	arrout/.style={
+		->,
+		-latex,
+		thick,
+	},
+	arrin/.style={
+		<-,
+		latex-,
+		thick,
+		El         },
+	arrd/.style={
+		<->,
+		>=latex,
+		thick,
+	},
+	arrw/.style={
+		thick,
+	}
+}
+
+
+\tikzset{
+	circ/.style={
+		circle,
+		draw=black, 
+		thick,
+		text centered,
+	},
+	circw/.style={
+		circle,
+		draw=white, 
+		thick,
+		text centered,
+	},
+	arrout/.style={
+		->,
+		-latex,
+		thick,
+	},
+	arrin/.style={
+		<-,
+		latex-,
+		thick,
+	},
+	arrw/.style={
+		-,
+		thick,
+	},
+	arrww/.style={
+		-,
+		thick,
+		draw=white, 
+	}
+}
+
+\newcommand{\as}{\boldsymbol{a}}
+\newcommand{\ba}{\mathbf{a}}
+
+\newcommand{\w}{\mathbf{w}}
+\newcommand{\A}{A}
