@@ -1,0 +1,122 @@
+\todo{antoine}
+
+In this section, we connect the notions of diagrams
+(Section~\ref{sec:diagrams}) and circuits (Section~\ref{sec:circuits}). We do
+so by explaining why diagrams are in fact specific classes of circuits, with a
+direct translation from diagrams to circuits.
+Furthermore, we show how the conditions that we have defined on diagrams can be
+preserved by this transformation.
+
+\paragraph*{Linear v-trees}
+The translation from diagrams to circuits, when applied to ordered diagrams
+(OBDDs), will produced structured circuits whose v-tree has a specific shape.
+We define these v-trees, called \emph{right-linear v-trees}, and explain how
+to obtain them from the order respected by the OBDD.
+
+Formally, given an order $<$ on variables $\X$, we define the
+\emph{right-linear vtree} $T_<$ obtained from~$<$ in the following way:
+\begin{itemize}
+  \item if
+$\X$ consists of a single variable $x$ then $T_<$ is the singleton tree whose root
+is a leaf node labeled by $x$;
+\item if $\X$ consists of two variables $x<y$ then $T_<$ is the tree whose
+  root is an internal node having $x$ as left child and $y$ as right child;
+\item otherwise, letting $x$ be the smallest element of~$\X$ according to~$<$,
+  we let $T_<$ be the tree whose root is an internal node having $x$ has
+    left child and having as right child the root of the tree $T_{<'}$ obtained
+    from the order $<'$ which is the restriction of~$<$ to $\X \setminus \{x\}$.
+\end{itemize}
+
+Note that the choice of right-linear v-trees is arbitrary; similar
+construtions could be made with a left-linear v-tree.
+
+\paragraph*{Converting diagrams to circuits}. 
+We are now ready to state the immediate translation from diagrams to
+circuits, and to explain how conditions on the circuit can be rephrased to
+conditions on the diagram. This is a folklore result which has previously
+appeared, e.g., Proposition 3.4 of~\cite{ACMS20}:
+
+\begin{proposition}
+  Given a nBDD $\D$, we can convert it in linear time to a circuit $C$
+  that describes the same Boolean function.
+
+  The translation satisfies the following variable structuredness
+  conditions:
+  \begin{itemize}
+    \item If the input nBDD is free,
+    then the resulting circuit is
+    \emph{decomposable} (DNNF).
+  \item If the input nBDD is ordered with an order $<$, then the
+    resulting circuit is \emph{structured} with the right-linear vtree $T_<$
+  \end{itemize}
+
+  Cumulatively, the translation further satisfies the following level of ambiguity conditions:
+  \begin{itemize}
+    \item If the input nBDD is unambiguous then the resulting circuit
+      is \emph{deterministic}.
+    \item If the input nBDD is deterministic then the resulting circuit
+      is \emph{decision}.
+  \end{itemize}
+  
+  Last, if the input is a decision tree, then the output is a Boolean formula.
+\end{proposition}
+
+\begin{proof}
+  We use the following general linear-time translation
+from diagrams to circuits:
+\begin{itemize}
+  \item We replace true
+leaves and false leaves respectively by
+constant true and false gates, i.e.,
+$\lor$-gates with no inputs and $\land$-gates
+with no inputs respectively.
+    \item We replace
+internal nodes $n$ on a variable $X$ with a
+gate defined like in the decision of decision
+gates above; formally, let $g^1_0,\ldots, g^{k_0}_0$ (resp., $g^1_1,\ldots, g^{k_1}_1$)
+be the translations of the nodes and
+to which $n$ had edges labeled
+with $0$ (resp., with $1$).
+Construct a gate $g_0$ (resp., $g_1$) to be an $\lor$-gate of the gates $g^1_0,\ldots, g^{k_0}_0$ (resp., of $g^1_1,\ldots, g^{k_1}_1$).
+We then translate
+$n$ to a $\lor$-gate whose inputs are an
+$\land$-gate conjoining $g_1$ and $X$,
+and an $\land$-gate conjoining $g_0$
+and a negation gate of~$X$.
+    \item Last, the output (root) gate of the
+circuit is the translation of the root of the
+BDD.
+\end{itemize}
+
+One can check that the translation runs in
+linear time and produces a circuit with the
+same semantics as the BDD, i.e., a circuit that represents the same
+  Boolean function; and that it has the stated properties. \antoine{TODO:
+  more detail}
+% 
+% \begin{itemize}
+%   \item If the input nBDD is free (nFBDD),
+%     then the resulting circuit is
+%     \emph{decomposable} (DNNF). Further, if
+%     the input BDD is ordered (nOBDD), then the
+%     resulting circuit is \emph{structured}
+%     (SDNNF), with a \emph{linear vtree}
+%     corresponding to the OBDD order. Formally,
+%     a linear vtree corresponding to some
+%     variable order $X_1< \ldots < X_\ell$ is a
+%     vtree containing internal nodes
+%     $n_1,\ldots,n_{\ell-1}$ with $n_{i+1}$
+%     being a child of $n_i$ for $i\in
+%     \{1,\ldots,\ell-2\}$, with $X_i$ being a
+%     child of $n_i$ for $i\in
+%     \{1,\ldots,\ell-1\}$ and $X_\ell$ being a
+%     child of $n_{\ell-1}$.
+%     \item If the input nBDD  is \emph{unambiguous} (uBDD), then the resulting circuit is \emph{deterministic}. Further, if it is \emph{deterministic}  (BDD), then the resulting circuit is \emph{decision} (i.e., the only $\lor$-gates having more than one input in the circuit are the decision gates introduced in the transformation). The same holds in the case of free and structured diagrams: uFBDDs and uOBDDs respectively give d-DNNF and d-SDNNFs with a linear vtree, and FBDDs and OBDDs respectively give dec-DNNFs and dec-SDNNFs with a linear vtree.
+%     \item If the input BDD is a decision tree, then the result of the
+%       transformation is a Boolean formula.
+%       % (TODO check, depending on subclasses\mikael{what is there to check?})
+% \end{itemize}
+\end{proof}
+
+\antoine{add an example}
+

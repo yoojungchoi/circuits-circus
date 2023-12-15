@@ -1,0 +1,13 @@
+## Things to cover
+
+- section about arithmetic circuits, connections, and translations between
+  formalisms
+- section about semiring circuits as a unifying formalism
+- connections to communication complexity
+- circ2diag.tex: efficiently converting circuits (in the case of linear vtrees) to diagrams
+- knowlege compilers and how they work in practice
+
+## Things to understand
+
+- Is there a lower bound about the conversion from circuits to *non-free* BDDs?
+

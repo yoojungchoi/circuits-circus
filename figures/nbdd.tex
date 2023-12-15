@@ -1,13 +1,15 @@
 \begin{tikzpicture}[scale=0.85, transform shape]
   \node[thick, draw=black, ellipse, minimum height=8mm, text centered] (n1) {$u_1 : X$};
-  \node[thick, draw=black, ellipse, minimum height=8mm, below=12mm of n1, text centered] (n3) {$u_3 : Z$}
+  \node[thick, draw=black, ellipse, minimum height=8mm, below=12mm of n1, text centered] (n3) {$u_3 : W$}
     edge[arrin] node[left] {$0$} (n1);
-  \node[thick, draw=black, ellipse, minimum height=8mm, left=12mm of n3, text centered] (n2) {$u_2 : Y$}
+  \node[thick, draw=black, ellipse, minimum height=8mm, left=12mm of n3, text centered] (n2) {$u_2 : Z$}
     edge[arrin] node[above] {$0$} (n1);
-  \node[thick, draw=black, ellipse, minimum height=8mm, right=12mm of n3, text centered] (n4) {$u_4 : W$}
+  \node[thick, draw=black, ellipse, minimum height=8mm, right=12mm of n3, text centered] (n4) {$u_4 : Z$}
     edge[arrin] node[above] {$1$} (n1);
   \node[thick, draw=black, ellipse, minimum height=8mm, below=12mm of n3, text centered] (n5) {$u_5 : Y$}
-    edge[arrin] node[right] {$1$} (n3);
+    edge[arrin] node[above] {$0$} (n4)
+    edge[arrin] node[above] {$1$} (n2)
+    edge[arrin] node[right] {$0$} (n3);
   \node[thick, draw=black, ellipse, minimum height=8mm, below left=15mm and 6mm of n5, text centered] (n6) {$u_6 : \true$}
     edge[arrin] node[below] {$1$} (n5)
     edge[arrin, bend left=4mm] node[left] {$1$} (n3)

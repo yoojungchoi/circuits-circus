@@ -17,6 +17,11 @@ satisfying assignments of~$f$, and~$\ssat(f)$ the size of this set.
 % M: doing this
 
 \paragraph*{CNFs and DNFs.}
-TODO clauses, terms, CNFs, DNFs
-
-TODO prime implicant (PI)
+Let $\X$ a set of variables. A \emph{literal} is an expression of the form $X$
+or $\lnot X$ for $X\in \X$. A \emph{clause} is a disjunction of literals, for
+instance $X_1 \lor X_2 \lor \lnot X_3$. A \emph{formula in conjunctive normal
+form}, or \emph{CNF} for short, is a formula that is a conjunction of clauses,
+i.e., an expression of the form $\bigwedge_{i=1}^n C_i$ where each $C_i$ is a
+clause. We call a conjunction of literals a \emph{term}. A \emph{formula in
+disjunctive normal form}, or DNF, is a disjunction of terms i.e., an expression
+of the form $\bigvee_{i=1}^n t_i$ where each $t_i$ is a term.

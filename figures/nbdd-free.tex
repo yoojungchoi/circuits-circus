@@ -6,15 +6,34 @@
     edge[arrin] node[above] {$0$} (n1);
   \node[circ, minimum size=9mm, right=22mm of n3] (n4) {$W$}
     edge[arrin] node[above] {$1$} (n1);
-  \node[circ, minimum size=9mm, below=11mm of n3] (n5) {$Y$}
-    edge[arrin] node[right] {$1$} (n3);
-  \node[circ, minimum size=9mm, below=11mm of n2] (n8) {$Z$}
-    edge[arrin] node[left] {$1$} (n2);
-  \node[circ, minimum size=9mm, below left=14mm and 12mm of n5] (n6) {$\true$}
-    edge[arrin] node[below] {$1$} (n5)
-    edge[arrin, bend left=4mm] node[left] {$1$} (n3)
-    edge[arrin] node[left] {$0$} (n8);
-  \node[circ, minimum size=9mm, below right=14mm and 12mm of n5] (n7) {$\false$}
-    edge[arrin] node[below] {$0$} (n5)
+  \node[circ, minimum size=9mm, below=11mm of n3] (n5) {$W$}
+    edge[arrin] node[above] {} (n2)
+    edge[arrin] node[left] {} (n3);
+  \node[below right=1mm and 0mm of n2] (e23) {$0$};
+  \node[circ, minimum size=9mm, below=11mm of n4] (n9) {$Y$}
+  edge[arrin] node[right] {} (n3)
     edge[arrin] node[right] {$1$} (n4);
+  \node[circ, minimum size=9mm, below=11mm of n2] (n8) {$Z$}
+    edge[arrin] node[above] {} (n4)
+    edge[arrin] node[left] {$1$} (n2);
+ 
+  \node[below right=-5mm and 1mm of n3] (e39) {$0$};
+
+\node[circ, minimum size=9mm, below left=14mm and 12mm of n5] (n6) {$\true$}
+edge[arrin] node[left] {$1$} (n8)
+    edge[arrin] node[below] {} (n9)
+    edge[arrin] node[below] {} (n5);
+  \node[circ, minimum size=9mm, below right=14mm and 12mm of n5] (n7) {$\false$}
+    edge[arrin] node[below] {} (n8)
+    edge[arrin] node[right] {$0$} (n9)
+    edge[arrin] node[below] {} (n5);
+    
+\node[below left=-0.5mm and 2mm of n4] (e48) {$0$};
+\node[below left=1mm and -3mm of n3] (e35) {$1$};
+
+\node[below right=-4mm and 4mm of n8] (e8t) {$0$};
+\node[below left=-4mm and 4mm of n9] (e9f) {$1$};
+
+\node[below left= 1mm and -2.5mm of n5] (e5t) {$0$};
+\node[below right= 1mm and -2.5mm of n5] (e5f) {$1$};
 \end{tikzpicture}

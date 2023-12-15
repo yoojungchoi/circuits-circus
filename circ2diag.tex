@@ -1,0 +1,109 @@
+
+\paragraph*{Linear v-trees}
+To formally state the connections between diagrams and structured circuits, it will
+help to define \emph{linear v-trees} as the v-trees of structured
+circuits that correspond well to diagrams.
+
+Formally, we say that a v-tree is \emph{linear} if, for every internal node, at
+least one child of the node is a leaf. Note that this implies that, for each
+depth, there is precisely one variable node at that depth: except that, when
+the root of the tree is not a leaf, then at
+the lowest depth there are two variables.
+A linear v-tree $T$ defines an \emph{order} $<_T$
+on the variables $\X$ obtained by ordering them according to their depth: if
+there are two deepest variables then we order the left child of their common
+parent before the right child.
+
+Conversely, given an order $<$ on variables $\X$, we define the
+\emph{right-linear vtree} $T_<$ obtained from~$<$ in the following way:
+\begin{itemize}
+  \item if
+$\X$ consists of a single variable $x$ then $T_<$ is the singleton tree whose root
+is a leaf node labeled by $x$;
+\item if $\X$ consists of two variables $x<y$ then $T_<$ is the tree whose
+  root is an internal node having $x$ as left child and $y$ as right child;
+\item otherwise, letting $x$ be the smallest element of~$\X$ according to~$<$,
+  we let $T_<$ be the tree whose root is an internal node having $x$ has
+    left child and having as right child the root of the tree $T_{<'}$ obtained
+    from the order $<'$ which is the restriction of~$<$ to $\X \setminus \{x\}$.
+\end{itemize}
+
+Note that indeed $T_<$ is a linear v-tree and the order that it defines
+in~$<$. The choice of right-linear v-trees is arbitrary; similar
+construtions could be made with a left-linear v-tree.
+
+\subsection{Converting structured circuits with linear v-trees to diagrams}
+
+Conversely, there is a correspondence from circuits to diagrams in the
+case where the circuits are deterministic (DNNF) and structured by a
+linear v-tree.
+
+We claim:
+
+\begin{lemma}
+  Given a DNNF $C$ structured by a linear vtree $T$, we can convert $C$ in
+  polynomial time to an nOBDD $\D$ with variable order $<_T$. Furthermore, if
+  $C$ is a d-DNNF then $\D$ is a uOBDD, and if $C$ is a dec-DNNF then $\D$ is
+  an OBDD.
+\end{lemma}
+
+\antoine{TODO: first make the circuit smooth; second make it ``normal-form'' in
+the sense $\lor$-gates and $\land$-gates alternate; give up on linear time}
+
+\begin{proof}
+  We first rewrite the circuit in linear time so that vacuous $\land$-gates are
+  removed. More precisely, for every $\land$-gate $g$ having two inputs, we
+want to enforce that one input is either a variable or the negation of a
+  variable. For this, remember that $g$ is structured by a node $\rho(g)$
+  of~$T$: as $T$ is linear, one of its children is a variable $x$. We assume it is
+  the first child, and study the first input $g_1$ of~$g$; the other case is
+  symmetric. Now, we know that the variables of~$g_1$ are a subset of~$x$.
+  There are two possibilities depending on the semantics of~$g_1$:
+  \begin{itemize}
+    \item If $g_1$ is never satisfiable, then the same holds of~$g$, so we
+      replace $g$ by a $\lor$-gate with no inputs
+    \item If $g_1$ is always true, then $g$ always evaluates to its other
+      input $g_2$, so we replace $g$ by~$g_2$
+    \item Otherwise, we replace $g_1$ by $x$ or the negation of~$x$ depending
+      on which of the two valuations satisfies~$g_1$.
+  \end{itemize}
+  \antoine{TOOD discuss complexity: I think it is linear time}
+
+  Now, we will construct the circuit by having one node of the diagram for every
+  gate which is either the input to a $\times$-gate in the circuit or is the
+  output gate of the circuit.
+
+  For each such gate $g$, we look for the set of gates $g'$ that are not
+  $\lor$-gates and have a directed path to~$g$ with the intermediate
+  gates being only $\lor$-gates. In particular if $g$ is not a $\lor$-gate then
+  the only choice is $g'=g$. Each of the gates $g'$ is either a variable gate,
+  the negation of a variable gate,
+  a $\times$-gate with two inputs, or a $\times$-gate with no inputs: we group
+  the gates $g'$ depending on the variable that they test (for variable gates
+  and negations of variable gates)
+  or the smallest variable that they have as an input literal (for
+  $\times$-gates with two inputs, knowing that we have ensured in the beginning
+  of the proof that each $\times$-gates had at least one input literal); we put
+  the $\times$-gates with no inputs last.
+
+  Then we create for~$g$ a decision node $n$ on the first of these variables
+  $x_1$,
+  with the following outgoing edges:
+  \begin{itemize}
+    \item Edges to a 1-sink, for literal gates testing $x_1$, whenever the
+      value of $x_1$ is as prescribed;
+    \item For $\land$-gates having $x_1$ as the smallest input literal, an edge
+      to the node created for their second input, labeled according to the
+      polarity of the literal
+  \end{itemize}
+  Further, we add edges labeled 0 and 1 to a decision node created for the
+  second variable $x_2$ in that order. We repeat the process until all
+  variables have been handled. At the end of the process we create edges with
+both labels to a 1-sink if we had a $\times$-gate with no inputs.
+
+  \antoine{TODO: correctness proof; running time analysis}
+
+  If the input circuit is deterministic, \antoine{TODO problem, the conversion does
+  not work for now if the circuit is not smooth...}
+\end{proof}
+

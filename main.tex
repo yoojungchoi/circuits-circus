@@ -62,26 +62,47 @@
 \date{}
 \maketitle
 
-\section{Preliminaries}
+\tableofcontents
+
+\section{Introduction} \label{sec:intro}
+\input{introduction}
+
+\section{Preliminaries} \label{sec:prelims}
 \input{prelims}
 
-\section{Decision Diagrams}
+\section{Decision Diagrams} \label{sec:diagrams}
+TODO Marcelo
+
 \input{decision}
 
-\section{Circuits}
+\section{Circuits} \label{sec:circuits}
 \input{circuits}
 
-\section{Problem definitions}
+\section{From diagrams to circuits} \label{sec:diag_circ}
+\input{diag2circ}
+
+\section{Testing membership} \label{sec:member}
+\input{membership}
+
+\section{Problem definitions} \label{sec:problems}
 \input{problems}
 
-\section{Results on these problems}
-\input{results}
+\section{Results on Queries} \label{sec:res_query}
+\input{results_problems}
 
-\section{Automata}
+\section{Results on Transformations} \label{sec:res_trans}
+\input{results_transformations}
+
+\section{Results on Operations} \label{sec:res_ops}
+\input{results_operations}
+
+\section{Automata} \label{sec:automata}
+TODO Mikaël, plus Antoine (think about SDDs/automata)
+
 \input{automata}
 
-\section{Testing membership}
-\input{membership}
+\section{Open problems} \label{sec:open_problems}
+\input{open}
 
 \bibliographystyle{plainnat}
 \bibliography{references}

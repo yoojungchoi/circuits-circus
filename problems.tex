@@ -1,8 +1,37 @@
 \todo[inline]{YooJung \& Benjie}
 
-\subsection{Boolean Queries}
+We have seen that decision diagrams and logical circuits are compact representations of Boolean functions, and that circuits can also be used as a representation of polynomials and probability distributions. We now examine the common problems that one wants to solve; for simplicity, we focus on Boolean functions and later discuss the connections with other formalisms. In particular, we distinguish three kinds of problems, informally defined as follows:
+\begin{itemize}
+  \item \textbf{Queries}: A query maps one or more Boolean function to some simple output, e.g. Booleans or reals.
+  %Boolean queries, and probabilistic variants: given a circuit and other
+    %inputs, return a Boolean, or a probability, or a list of satisfying
+   % assignments, etc.
+  \item \textbf{Operations}: An operation maps one or more Boolean functions to another Boolean function.
+  %given two or more circuits in the same formalism, represent the
+    %result of an operation, as a circuit in the same class
+  \item \textbf{Transformations}: A transformation maps a representation of a Boolean function into another representation of the same Boolean function.
+  %given a circuit in class A, convert it to a circuit in
+   % class B
+\end{itemize}
+An important question is the \emph{tractability} of these problems on different circuit representations, i.e. whether there exists a polynomial time algorithm for the query/operation/transformation. We will summarize known results on tractability in Sections \ref{sec:res_query}, \ref{sec:res_trans}, \ref{sec:res_ops}. 
+
+\subsection{Queries}
 % From Knowledge Compilation Map:
-Consider a Boolean function $f$ over a set of variables $X$. A query maps $f$ to an output as shown below:
+Consider a Boolean function $f$ over a set of variables $\X$. A \emph{query} $\query$ is a function that maps $f$, and possibly some other object(s), to some non-circuit object (e.g. Boolean, real). 
+
+\begin{table}[]
+\centering
+\begin{tabular}{@{}lll@{}}
+\toprule
+\textbf{Query} & \textbf{Input}         & \textbf{Output} \\ \midrule
+Consistency & None & $\sat(f) \neq \emptyset$  \\ \bottomrule
+\end{tabular}
+\label{tbl:bool_ queries}
+\caption{Boolean Queries}
+\end{table}
+
+
+A query maps $f$ to an output as shown below:
 \begin{itemize}
     \item Consistency: 1 if $\sat(f) \neq \emptyset$; 0 otherwise. \textit{(Satisfiability)}. 
     \item Consistency of partial assignment: given $f$ and a partial assignment, decide if there is a model extending the partial assignment.
@@ -25,10 +54,13 @@ Consider a Boolean function $f$ over a set of variables $X$. A query maps $f$ to
     \item Ranked enumeration of satisfying assignments
 \end{itemize}
 
+TODO Point out that we can always tractably test, given a circuit/diagram and a
+valuation, if it is accepted.
+
 \paragraph*{Probabilistic variants}
 What if we relax tasks like ``equivaence of functions'' to be approximate, e.g., with probability $1-\delta$? TODO
 
-\subsection{Operations/Transformations}
+\subsection{Operations}
 \label{sec:operations}
 
 
@@ -39,8 +71,10 @@ What if we relax tasks like ``equivaence of functions'' to be approximate, e.g.,
 \textbf{Operation} & \textbf{Boolean}         & \textbf{Probabilistic} & \textbf{Database} \\ \midrule
 $\formula | \varsubsetval$        & Conditioning             & Evidence/Instantiation & Selection         \\
 $\exists \varsubset. \formula$                   & Forgetting (Existential Quantification)               & Marginalization        & Projection        \\
-$\formula_1 \wedge \formula_2$                     & Conjunction              & Product                & Join              \\
-$\formula_1 \vee \formula_2$                  & Disjunction              & Sum/Max                & Union             \\
+  $\formula_1 \wedge \formula_2$                     & Conjunction (bounded,
+  i.e., only 2; or unbounded)             & Product                & Join              \\
+  $\formula_1 \vee \formula_2$                  & Disjunction (bounded, i.e.,
+  only 2; or unbounded)             & Sum/Max                & Union             \\
 $\neg \formula_1$                   & Negation                 & ?                      & Negation          \\
 $\forall \varsubset. \formula$                     & Universal Quantification & ?                      &   ?                \\ \bottomrule
 \end{tabular}
@@ -79,7 +113,7 @@ In Table \ref{tbl:operations}, we provide a list of common operations on Boolean
 
 
 
-\subsection{Translations: Comparison between classes}
+\subsection{Transformations: Comparison between classes}
 
 TODO? It's the special case of tractable operation when the 1-ary operation is the identity.
 

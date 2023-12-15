@@ -1,0 +1,35 @@
+The formalisms of Boolean circuits and binary decision diagrams are central in many
+communities with limited interaction: circuit complexity, SAT, knowledge
+compilation, etc. This document is an attempt to regroup definitions and
+conditions on diagrams and circuits to highlights the connections
+between these formalisms, and also mention the connections to automata.
+
+
+
+
+
+
+
+\subparagraph*{Related work (classes that we don't cover)}
+We also note that a class of circuits intermediate between DNNFs and SDNNFs has been proposed in~\cite{amarilli2017circuit}: this class requires that there is an order on the variables and that, for any $\land$-gate $g$, then $\var(g_1)$ and $\var(g_2)$ for its two inputs $g_1$ and $g_2$ are contained in disjoint intervals of the ordering. A structured circuit is always ordered, taking for order the traversal order on the leaves of a vtree, but the converse is not necessarily true.
+
+Last, we note that there is a notion of $\land$-BDDs that has been proposed, extending BDDs with $\land$-gates. TODO, in particular for how order works there (see Florent?).
+
+And-OBDDs?
+
+Last, we mention that the determinism and decomposability properties have
+analogous definitions in the world of \emph{arithmetic circuits}. Intuitively,
+an arithmetic circuit is a circuit computing a polynomial over a given field
+$\mathbb{F}$: the internal nodes correspond to multiplication or addition, and
+the nodes having no inputs are either elements of $\mathbb{F}$ or variables. We
+refer to the survey of \cite{shpilka2010arithmetic} for formal definitions. Then,
+decomposability means that the polynomial computed is \emph{multilinear}, i.e.,
+in every monomial the degree of each variable is at most one, whereas
+determinism means that the coefficients of every monomial is simply $1$.
+\antoine{TODO: mention connection between zero-suppressed semantics and
+arithmetic circuits; the connection between the monomial expressed by an
+arithmetic circuit and the set of accepting valuations only work in the
+zero-suppressed semantics}
+\antoine{TODO: mention a bit the possibility of doing conversions}
+\antoine{TODO: also mention depth reduction}
+

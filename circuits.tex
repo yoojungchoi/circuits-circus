@@ -4,7 +4,7 @@ Fixing a set $\X$ of variables, the gates of~$C$ can be of several kinds:
 \begin{itemize}
 \item A \emph{variable}, annotated with a variable of~$\X$, which must then have no input;
 \item A \emph{negation gate}, which must have exactly one input;
-\item An \emph{$\land$-gate} or \emph{$\lor$-gate}.
+\item An \emph{$\land$-gate} or \emph{$\lor$-gate}, which can have an arbitrary number (including zero) of inputs.
 \end{itemize}
 The circuit $C$ over variables $\X$ represents a Boolean function over $\X$ in the following way.
 Given a valuation $\ba\colon \X \to \{0, 1\}$, we extend it to give a Boolean value to all gates of the circuit by bottom-up induction:
@@ -30,15 +30,13 @@ dimensions.
 Formally, an $\land$-gate~$g$ of~$C$ is
 \emph{decomposable} if it has exactly zero (i.e., it is a constant $1$-gate) or two input gates and, in case it has two input gates $g_1\neq g_2$ we
 have~$\vars(g_1) \cap \vars(g_2) = \emptyset$. A circuit $C$ is \emph{decomposable} if every $\land$-gate of~$C$ is.
-    Note that this is a syntactic condition that can easily be checked in time $O(|C||\X|)$. A decomposable NNF circuit is called a \emph{DNNF}. We point out that DNNFs are sometimes defined without the restriction that $\land$-nodes always have zero or two inputs; we impose this for convenience, and this if without much loss of generality as this can be enforced in linear time.
+    Note that this is a syntactic condition that can easily be checked in time $O(|C||\X|)$. A decomposable NNF circuit is called a \emph{DNNF}. We point out that DNNFs are sometimes defined without the restriction that $\land$-nodes always have zero or two inputs; we impose this for convenience, and this is without much loss of generality as this can be enforced in linear time.
     
-    Further, a DNNF is \emph{structured} if the partition defined by the $\land$-gates is always the same, in the following sense.
+    Further, a DNNF is \emph{structured} if the partitions defined by the $\land$-gates are compatible, in the following sense.
 A \emph{v-tree} over the set of variables $\X$ is a rooted full binary tree $T$ whose leaves are in bijection with $\X$.  We
 always identify each leaf with the associated element of $\X$. For a node~$n\in T$, we abuse notation and denote by~$\vars(n)$ the set of variables in the subtree rooted at~$n$. A DNNF $D$ is \emph{structured by the v-tree $T$} if there exists a mapping $\rho$ labeling each $\land$-gate of $g$ with a node of $T$ that satisfies the following: for
 every $\land$-gate $g$ of $D$ with two inputs $g_1, g_2$, the node $\rho(g)$ \emph{structures} $g$, i.e.,
-there exist two distinct children $n_1$, $n_2$ of $\rho(g)$ such that $\vars(g_i) \subseteq \vars(T_{n_i} )$ for $i=1,2$. A DNNF is \emph{structured}, written \emph{SDNNF}, if there exists a v-tree that structures it. Note that, given as input a DNNF, it is possible to determine in \todo[inline]{$O(TODO)$} if it is structured, and if so compute an associated v-tree and mapping $\rho$.
-% \todo[inline]{Say something to justify the arity-two restriction:  is this only for convenience to define v-trees?}
-%M: added comment where we define decomposability
+there exist two distinct children $n_1$, $n_2$ of $\rho(g)$ such that $\vars(g_i) \subseteq \vars(T_{n_i} )$ for $i=1,2$. A DNNF is \emph{structured}, written \emph{SDNNF}, if there exists a v-tree that structures it. 
 
 
 \item \textbf{Ambiguity level.} A circuit is \emph{unambiguous}, which is (unfortunately) called for historical reasons \emph{deterministic}, if, intuitively, the inputs to $\lor$-gates are mutually exclusive. Formally,
@@ -46,100 +44,134 @@ an~$\lor$-gate~$g$ of~$C$ is \emph{deterministic} if
 for every pair~$g_1\neq g_2$ of input gates of~$g$, the Boolean functions
 over~$\X$ captured by~$C_{g_1}$ and~$C_{g_2}$ are disjoint; that is, we
 have~$\sat(C_{g_1}) \cap \sat(C_{g_2}) = \emptyset$.  We call~$C$
-\emph{deterministic} if each~$\lor$-gate is. A circuit which is both decomposable and deterministic is called \emph{d-DNNF}, and if it is in addition structured then we have a d-SDNNF. 
-A stronger notion of determinism is that of determinism in the sense of BDDs, which we call \emph{decision} to distinguish it from determinism. An $\lor$-gate is \emph{decision} if it has no inputs or has exactly two inputs $g_0$ and $g_1$ and there is a variable $X$ such that $g_1$ is an $\land$-gate with $X$ as input, and $g_0$ is an $\land$-gate with a negation gate of $X$ as input. The circuit $C$ is \emph{decision} if all $\lor$-gates are decision. Note that being decision is a syntactic condition, and a decision circuit is always deterministic. A circuit which is both decomposable and decision is called \emph{dec-DNNF}, and \emph{dec-SDNNF} if it is structured.
+\emph{deterministic} if each~$\lor$-gate is.
+    
+A stronger notion of determinism is that of determinism in the sense of BDDs, which we call \emph{decision} to distinguish it from determinism. An $\lor$-gate is \emph{decision} if it has no inputs or has exactly two inputs $g_0$ and $g_1$ and there is a variable $X$ such that $g_1$ is an $\land$-gate with $X$ as input, and $g_0$ is an $\land$-gate with a negation gate of $X$ as input. The circuit $C$ is \emph{decision} if all $\lor$-gates are decision. Note that being decision is a syntactic condition, and a decision circuit is always deterministic.
 \end{itemize}
 
-We point out that determinism is a semantic
-condition rather than a syntactic one. In
-fact, we can show that determining whether an
-input DNNF circuit is deterministic is an
-coNP-complete problem. To the best of our knowledge, we are the first to formally prove this:
-
-\begin{proposition}
-The following decision problem is
-coNP-complete: given as input a DNNF $C$,
-decide whether it is deterministic.
-\end{proposition}
-\begin{proof}
-  \mikael{todo quickly explain the proof of TODO that
-  determining if a given $\lor$-gate of a
-  circuit is deterministic is coNP-complete,
-  explain that this does not imply the claim
-  of this proposition, then show a proper
-proof.}
-\end{proof}
+When considering combinations of the two, people typically assume decomposability. 
+A circuit which is both decomposable and deterministic is called a \emph{d-DNNF}, and if it is in addition structured then we have a d-SDNNF. 
+ A circuit which is both decomposable and decision is called a \emph{dec-DNNF}, and \emph{dec-SDNNF} if it is structured.
 
 
-\paragraph*{Connections between diagrams and
-circuits.} 
-Circuits generalize diagrams, with
-the following general linear-time translation
-from diagrams to circuits. We replace true
-leaves and false leaves respectively by
-constant true and false gates, i.e.,
-$\lor$-gates with no inputs and $\land$-gates
-with no inputs respectively. We replace
-internal nodes $n$ on a variable $X$ with a
-gate defined like in the decision of decision
-gates above; formally, let $g^1_0,\ldots, g^{k_0}_0$ (resp., $g^1_1,\ldots, g^{k_1}_1$)
-be the translations of the nodes and
-to which $n$ had edges labeled
-with $0$ (resp., with $1$).
-Construct a gate $g_0$ (resp., $g_1$) to be an $\lor$-gate of the gates $g^1_0,\ldots, g^{k_0}_0$ (resp., of $g^1_1,\ldots, g^{k_1}_1$).
-We then translate
-$n$ to a $\lor$-gate whose inputs are an
-$\land$-gate conjoining $g_1$ and $X$,
-and an $\land$-gate conjoining $g_0$
-and a negation gate of~$X$. Last, the output (root) gate of the
-circuit is the translation of the root of the
-BDD.
+\begin{example} \label{ex:class}
+The following example is taken from~\cite{arenas2023complexity}.
+   We want to classify papers submitted to a conference as rejected
+(Boolean value $0$) or accepted (Boolean value $1$). Papers are
+described by Boolean features \feat{fg}, \feat{dtr}, \feat{nf} and \feat{na},
+which stand for ``follows guidelines", ``deep theoretical result", ``new
+framework" and ``nice applications", respectively.  The Boolean classifier
+for the papers is given by the Boolean circuit in
+Figure~\ref{fig:ddbc-exa}. The input of this circuit are the
+features \feat{fg}, \feat{dtr}, \feat{nf} and \feat{na}, each of which
+can take value either $0$ or $1$, depending on whether the feature is
+present~($1$) or absent~($0$). The nodes with labels~$\neg$, $\lor$ or~$\land$ are logic gates, and the associated Boolean value of
+each one of them depends on the logical connective represented by its
+label and the Boolean values of its inputs. The output
+value
+of the circuit is given by
+the top node in the figure.
 
-It is clear that this translation runs in
-linear time and produces a circuit with the
-same semantics, i.e., that represents the same
-Boolean function, as the BDD. What is more:
-\begin{itemize}
-  \item If the input nBDD is free (nFBDD),
-    then the resulting circuit is
-    \emph{decomposable} (DNNF). Further, if
-    the input BDD is ordered (nOBDD), then the
-    resulting circuit is \emph{structured}
-    (SDNNF), with a \emph{linear vtree}
-    corresponding to the OBDD order. Formally,
-    a linear vtree corresponding to some
-    variable order $X_1< \ldots < X_\ell$ is a
-    vtree containing internal nodes
-    $n_1,\ldots,n_{\ell-1}$ with $n_{i+1}$
-    being a child of $n_i$ for $i\in
-    \{1,\ldots,\ell-2\}$, with $X_i$ being a
-    child of $n_i$ for $i\in
-    \{1,\ldots,\ell-1\}$ and $X_\ell$ being a
-    child of $n_{\ell-1}$.
-    \item If the input nBDD  is \emph{unambiguous} (uBDD), then the resulting circuit is \emph{deterministic}. Further, if it is \emph{deterministic}  (BDD), then the resulting circuit is \emph{decision} (i.e., the only $\lor$-gates having more than one input in the circuit are the decision gates introduced in the transformation). The same holds in the case of free and structured diagrams: uFBDDs and uOBDDs respectively give d-DNNF and d-SDNNFs with a linear vtree, and FBDDs and OBDDs respectively give dec-DNNFs and dec-SDNNFs with a linear vtree.
-    \item If the input BDD is a decision tree, then the result of the transformation is a Boolean formula (TODO check, depending on subclasses\mikael{what is there to check?})
-\end{itemize}
+The Boolean circuit in
+Figure~\ref{fig:ddbc-exa} is decomposable, because each
+$\land$-gate has two inputs, and the sets of features of its inputs are pairwise
+disjoint. For instance, in the case of the top node in
+Figure~\ref{fig:ddbc-exa}, the left-hand side input has
+$\{\feat{fg}\}$ as its set of features, while its right-hand side
+input has $\{\feat{dtr}, \feat{nf}, \feat{na}\}$ as its set of
+features, which are disjoint. Also, this circuit is deterministic as 
+for every $\lor$-gate two (or more) of its inputs cannot be given
+value 1 by the same Boolean assignment for the features. For instance,
+in the case of the only $\lor$-gate in Figure~\ref{fig:ddbc-exa}, if a
+Boolean assignment for the features gives value 1 to its left-hand side
+input, then feature \feat{dtr} has to be given value 1 and, thus, such
+an assignment gives value $0$ to the right-hand side input of the~$\lor$-gate.
+In the same way, it can be seen that if a Boolean assignment for the features
+gives value 1 to the right-hand side input of this $\lor$-gate, then it gives
+value $0$ to its left-hand side input.
+\qed
+\end{example}
 
-Conversely, there is a correspondence from structured DNNF with a linear v-tree (TODO define), and OBDDs. TODO explain and note connection with decision/deterministic and nOBDD/uOBDD.
+\begin{figure}
+\begin{center}
+\begin{center}
+\begin{tikzpicture}
+  \node[circ, minimum size=7mm, inner  sep=-2] (n1) {\feat{dtr}};
+  \node[circ, right=12mm of n1, minimum size=7mm] (n2) {\feat{nf}};
+  \node[circ, above=1.3mm of n2, minimum size=7mm] (nneg) {$\neg$}
+    edge[arrin] (n1);
+  \node[circ, right=12mm of n2, minimum size=7mm] (n3) {\feat{na}};
+  \node[circ, right=6mm of nneg, minimum size=7mm] (nbla) {$\land$}
+  edge[arrin] (n2)
+  edge[arrin] (n3);
+  \node[circ, above=10mm of n3, minimum size=7mm] (n4) {$\land$}
+  edge[arrin] (nneg)
+  edge[arrin] (nbla);
+  \node[circ, above=18mm of n2, minimum size=7mm] (n5) {$\lor$}
+  edge[arrin] (n4)
+  edge[arrin] (n1);
+  \node[circ, above=27mm of n1, minimum size=7mm] (n6) {$\land$}
+  edge[arrin] (n5);
+  \node[circw, left=12mm of n5, minimum size=7mm] (n5a) {};
+  \node[circ, left=12mm of n5a, minimum size=7mm, inner sep=-2] (n0) {\feat{fg}}
+  edge[arrout] (n6);
+\end{tikzpicture}
+\end{center}
+\caption{A deterministic and decomposable Boolean Circuit as a classifier. \label{fig:ddbc-exa}}
+\end{center}
+\end{figure}
 
-\subparagraph*{SDD} There are intermediate classes between determinism and decomposability:
+\subparagraph*{SDD}
+\todo[inline]{TODO: YooJung}
+% \todo[inline]{Antoine: move this to the circuit section, keep this definition}
+There are intermediate classes between determinism and decomposability. First,
+we impose structuredness. Then we impose:
 \begin{itemize}
     \item Strong determinism: all or-gates have as inputs some ANDs, and the LHS of the ANDs are mutually exclusive
-    \item Pre-SDD: Further, the disjunction of the LHSs is true (= the LHS partition the space)
+    \item Exhaustiveness: Further, the disjunction of the LHSs is true (= the LHS partition the space)
 \end{itemize}
-These classes typically only make sense for strutured classes (indeed otherwise the first one is trivial). So an SDD is a structured pre-SDD.
+These classes typically only make sense for structured classes (indeed otherwise
+the first one is trivial). So an SDD is a structured circuit which is
+strongly deterministic and exhaustive.
+\todo[inline]{Antoine: not for here but to keep in mind: is this related to classes of tree languages? or to classes of CFGs?}
 
-\subparagraph*{Ordered circuits}
-We also note that a class of circuits intermediate between DNNFs and SDNNFs has been proposed in~\cite{amarilli2017circuit}: this class requires that there is an order on the variables and that, for any $\land$-gate $g$, then $\var(g_1)$ and $\var(g_2)$ for its two inputs $g_1$ and $g_2$ are contained in disjoint intervals of the ordering. A structured circuit is always ordered, taking for order the traversal order on the leaves of a vtree, but the converse is not necessarily true.
-
-Last, we note that there is a notion of $\land$-BDDs that has been proposed, extending BDDs with $\land$-gates. TODO, in particular for how order works there (see Florent?).
+As for decision diagrams, one can also be interested in whether the circuits
+allow sharing, or if they check all the variables:
 
 \paragraph*{Sharing.}
-    When the underlying graph of a circuit is a tree (noting that each variable can occur multiple times), then we call the result a \emph{Boolean formula} (not to be confused with a Boolean function). If the circuit is in NNF, then the Boolean formula is in NNF. Examples of Boolean formulas in NNF include Boolean formulas in \emph{conjunctive normal form} (CNF), a conjunction of disjunction of literals; and Boolean formulas in \emph{disjunctive normal form} (DNF), a disjunction of conjunctions of literals. Note that Boolean formulas may still contain several occurrences of the same variable or literal; when we further impose that the circuit has a tree structure and that there is only one gate for each variable, we obtain what is called a \emph{read-once formula}.
+When the underlying graph of a circuit is a tree (noting that each variable
+can occur multiple times), then we call the result a \emph{Boolean formula}
+(not to be confused with a Boolean function). If the circuit is in NNF,
+then the Boolean formula is in NNF. Examples of Boolean formulas in NNF
+include Boolean formulas in \emph{conjunctive normal form} (CNF), a
+conjunction of disjunction of literals; and Boolean formulas in
+\emph{disjunctive normal form} (DNF), a disjunction of conjunctions of
+literals. Note that Boolean formulas may still contain several occurrences
+of the same variable or literal; when we further impose that the circuit
+has a tree structure and that there is only one gate for each variable, we
+obtain what is called a \emph{read-once formula}.
 
+\paragraph*{Smoothness and Zero-suppressed semantics.}
+An $\lor$-gate $g$ of a circuit $C$ is \emph{smooth} if for every input $g'$ of
+$g$ we have $\vars(g)=\vars(g')$, and $C$ is called \emph{smooth} if all its
+$\lor$-gates are smooth. Smoothness is the circuit analogue of
+\emph{completeness} for decision diagrams. \emph{Smoothing} is the process of
+taking a circuit~$C$ as input, and constructing a circuit~$C'$ that is
+equivalent to $C$ and that is smooth. This can be done naïvely in quadratic
+time as follows. Letting $\X$ be the variables, compute in time $O(|C||\X|)$
+the set $\vars(g)$ for every $g\in \X$. Then, for every $\lor$-gate $g'$ and
+input gate $g'$ such that $\vars(g') \subsetneq \vars(g')$, replace $g'$ by an
+$\land$-gate of $g'$ and of $\bigwedge_{X \in \vars(g)\setminus \vars(g')} (X
+\lor \lnot X)$. It is clear that the resulting circuit is equivalent and
+smooth, and that this can be done in $O(|C||\X|)$. Furtheremore, if $C$ was
+decomposable, then $C'$ also is, and the same is true for being in NNF. We note
+that smoothing can be done more efficiently for structured circuit
+classes~\citep{DBLP:conf/nips/ShihBBA19}. As for decision diagrams, one can
+also define a \emph{zero-suppressed semantics} for circuits: the idea is that a
+variable that is not mentioned has to be assigned the value $0$ (as opposed to
+being allowed to be $0$ or $1$). We refer to~\cite{amarilli2017circuit} for the
+formal definitions.
 
-\paragraph*{Smoothing.}
-TODO
+\todo[inline]{YooJung: connections to probabilistic circuits? could be moved elsewhere too}
+\todo[inline]{Antoine: I agree we can try putting it here}
 
-\paragraph*{Misc things.}
-And-OBDDs?

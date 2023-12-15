@@ -1,3 +1,4 @@
+TODO YooJung
 What is the complexity of testing in which class an input falls? e.g., given an nBDD, is it an uBDD?
 
 Here is what we figured out:
@@ -5,6 +6,7 @@ Here is what we figured out:
 \begin{itemize}
 \item Checking decomposability is easy
 \item Checking structuredness is easy. Related to the question of efficiently computing a v-tree of an input circuit, which is in PTIME (YooJung already has something that does it)
+\todo[inline]{YooJung}
 \item Checking determinism is not straightforward:
     \begin{itemize}
         \item Given two OBDDs with different variable orders, it's NP-hard to test whether they are simultaneously satisfiable. The argument is that a 3-CNF with each variable occurring at most 3 times (any constant other than 3 also works) can be rewritten to one OBDD that just expresses the satisfying assignments but with each copy of the variable being distinguished (i.e., the formula is made read-once), and one OBDD that expresses that the copies of each variable are assigned in a consistent way.
@@ -13,3 +15,17 @@ Here is what we figured out:
         \item Last, on automata, checking if an input NFA or tree NFA is unambiguous is also PTIME. There is a bound on the size of a witnessing word by a product construction, so then you just unfold the automaton to that length and reduce to circuits. A simpler automaton-specific algorithm is known, at least for word automata and probably also for tree automata.
     \end{itemize}
 \end{itemize}
+
+To the best of our knowledge, we are the first to formally prove this:
+
+\begin{proposition}
+  \mikael{move this to the next section (about complexity of testing
+  conditions)}
+The following decision problem is
+coNP-complete: given as input an \nfbdd $'D$,
+decide whether it is unambiguous.
+\end{proposition}
+\begin{proof}
+  TODO
+\end{proof}
+

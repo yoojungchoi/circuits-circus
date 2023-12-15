@@ -1,13 +1,15 @@
 \begin{tikzpicture}[scale=0.85, transform shape]
   \node[circ, minimum size=9mm] (n1) {$X$};
-  \node[circ, minimum size=9mm, below=11mm of n1] (n3) {$Z$}
+  \node[circ, minimum size=9mm, below=11mm of n1] (n3) {$W$}
     edge[arrin] node[left] {$0$} (n1);
-  \node[circ, minimum size=9mm, left=22mm of n3] (n2) {$Y$}
+  \node[circ, minimum size=9mm, left=22mm of n3] (n2) {$Z$}
     edge[arrin] node[above] {$0$} (n1);
-  \node[circ, minimum size=9mm, right=22mm of n3] (n4) {$W$}
+  \node[circ, minimum size=9mm, right=22mm of n3] (n4) {$Z$}
     edge[arrin] node[above] {$1$} (n1);
   \node[circ, minimum size=9mm, below=11mm of n3] (n5) {$Y$}
-    edge[arrin] node[right] {$1$} (n3);
+    edge[arrin] node[above] {$0$} (n4)
+    edge[arrin] node[above] {$1$} (n2)
+    edge[arrin] node[right] {$0$} (n3);
   \node[circ, minimum size=9mm, below left=14mm and 12mm of n5] (n6) {$\true$}
     edge[arrin] node[below] {$1$} (n5)
     edge[arrin, bend left=4mm] node[left] {$1$} (n3)

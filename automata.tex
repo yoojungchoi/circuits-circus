@@ -376,3 +376,17 @@ automata gets converted to a $k$-uOBDD (for words) or $k$-d-DNNF (for trees).
 TODO: Mention the definition of width for diagrams and for circuits, and the
 normal form where ANDs and ORs alternate.
 
+
+\antoine{We have to understand what SDDs mean in terms of tree automata.
+Definition (in the context where automata only read labels on leaves not on
+internal nodes), a tree automaton is strongly deterministic if it has only one
+final state and if for any state $q$, for any distinct pairs $(q_1, q_2)$ and $(q_1',
+q_2')$ leading to~$q$, then $q_1$ and $q_1'$ are not compatible, where two
+states are compatible if there is a tree on which the automaton has a run
+labeling the root with $q_1$ and a run labeling the root with $q_1'$ (in
+particular it is the case if $q_1 = q_1'$). Bottom-up deterministic automata are
+not necessarily strongly deterministic, but deterministic top-down automata are
+strongly deterministic (but it's not longer clear you can do the standard finite
+argument showing that top-down deterministic is weaker). Big question: can you
+convert any tree automata to a strongly deterministic tree automaton?}
+

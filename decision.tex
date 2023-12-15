@@ -25,7 +25,7 @@
 \newcommand{\odt}{\textsf{ODT}\xspace}
 
 
-\todo[inline]{Marcelo \& Weiming}
+% \todo[inline]{Marcelo \& Weiming}
 
 %Dimensions: structuredness of variables, and degree of ambiguity 
 %Paragraphs on decision trees
@@ -56,11 +56,12 @@ assignment $\as$ is accepted by $\D$, denoted
 by $\D(\as) = 1$ or $\as \models \D$, if there exists an accepting
 run $\pi$ of $\D$ that is consistent with $\as$; otherwise, the
 assignment $\as$ is rejected by $\D$, which is
-denoted by $\D(\as) = 0$ (or $\as \not\models \D$). Notice that for every assignment $\as$, by condition (iii) there is always at least one run that is consistent with $\as$. Furthermore, observe that $\D$ represents a Boolean function over variables $\X$, and we will often identify $\D$ with the Boolean function that it represents. 
+denoted by $\D(\as) = 0$ (or $\as \not \models \D$). Notice that for every assignment $\as$, by condition (iii) there is always at least one run that is consistent with $\as$. Furthermore, observe that $\D$ represents a Boolean function over the set of variables $\X$, and we will often identify $\D$ with the Boolean function that it represents. 
 
 
 \begin{example}
-  An \nbdd $\D$ over the set of variables $\X = \{X,Y,Z,W\}$ is shown in Figure~\ref{fig-nbdd-with-id}. For each node we include its identifier and label; for instance, $u_1 : X$ indicates that node $u_1$ has label $X$. Two runs of $\D$ are $\pi_1 = u_1,u_2,u_6$ and $\pi_2 = u_1, u_3, u_5, u_7$, where $\pi_1$ is accepting as $u_6$ is a leaf with label $\true$. Consider the assignment $\as_1 \in \assign(\X)$ such that $\as_1(X) = \as_1(Y) = 0$ and $\as_1(Z) = \as_1(W) = 1$. Then we have that $\as_1$ is consistent with $\pi_1$. Notice that an assignment can be consistent with many different runs of an \nbdd; for instance, $\as_1$ is consistent with runs $\pi_1$ and $\pi_2$, as well as with run $u_1, u_3, u_6$. An assignment is accepted by an \nbdd if there exists at least one accepting run of the \nbdd that is consistent with it; for instance $\D(\as_1) = 1$ since $\as_1$ is consistent with the accepting run $\pi_1$ ($\D(\as_1) = 1$ despite the fact that $\as_1$ is consistent with the run $\pi_2 = u_1, u_3, u_5, u_7$ and the label of leaf $u_7$ is $\false$). Also notice that an assignment may not be consistent with any run \comm{Mikaël}{not anymore with the new definitions, update} of an \nbdd, in which case it is rejected by the \nbdd. For instance, if $\as_2$ is the assignment such that $\as_2(X) = 1$ and $\as_2(Y) = \as_2(Z) = \as_2(W) = 0$, then $\D(\as_2) = 0$ since $\as_2$ is not consistent with any run of $\D$.
+  An \nbdd $\D$ over the set of variables $\X = \{X,Y,Z,W\}$ is shown in Figure~\ref{fig-nbdd-with-id}. For each node we include its identifier and label; for instance, $u_1 : X$ indicates that node $u_1$ has label $X$. Two runs of $\D$ are $\pi_1 = u_1,u_2,u_6$ and $\pi_2 = u_1, u_3, u_5, u_7$, where $\pi_1$ is accepting as $u_6$ is a leaf with label $\true$. Consider the assignment $\as_1 \in \assign(\X)$ such that $\as_1(X) = \as_1(Y) = \as_1(Z) = \as_1(W) = 0$. Then we have that $\as_1$ is consistent with $\pi_1$. Notice that an assignment can be consistent with many different runs of an \nbdd; for instance, $\as_1$ is consistent with runs $\pi_1$ and $\pi_2$. An assignment is accepted by an \nbdd if there exists at least one accepting run of the \nbdd that is consistent with it; for instance $\D(\as_1) = 1$ since $\as_1$ is consistent with the accepting run $\pi_1$ $(\D(\as_1) = 1$ despite the fact that $\as_1$ is consistent with the run $\pi_2 = u_1, u_3, u_5, u_7$ and the label of leaf $u_7$ is $\false)$. 
+  %Also notice that an assignment may not be consistent with any run \comm{Mikaël}{not anymore with the new definitions, update} of an \nbdd, in which case it is rejected by the \nbdd. For instance, if $\as_2$ is the assignment such that $\as_2(X) = 1$ and $\as_2(Y) = \as_2(Z) = \as_2(W) = 0$, then $\D(\as_2) = 0$ since $\as_2$ is not consistent with any run of $\D$.
 
 We depict in Figure \ref{fig-nbdd-without-id} the same \nbdd as in Figure \ref{fig-nbdd-with-id}, but without including node identifiers. The usual graphical representation of an \nbdd is the one given in  Figure \ref{fig-nbdd-without-id}.
 \end{example}
@@ -79,22 +80,25 @@ We depict in Figure \ref{fig-nbdd-without-id} the same \nbdd as in Figure \ref{f
 \label{fig-nbdd-without-id}
 \end{subfigure}
 \end{center}
-\caption{An \nbdd over the set of variables $\X = \{X,Y,Z,W\}$. \label{fig-nbdd}}\comm{Mikaël}{add missing edges so that all internal nodes have at least one outgoing $1$-edge and at least one outgoing $0$-edge.}
+\caption{An \nbdd over the set of variables $\X = \{X,Y,Z,W\}$. \label{fig-nbdd}}
+%\comm{Mikaël}{add missing edges so that all internal nodes have at least one outgoing $1$-edge and at least one outgoing $0$-edge.}
 \end{figure}
 
 \noindent
-We classify nondeterministic binary decision diagrams according to two dimensions.
+Nondeterministic binary decision diagrams are classified according to two dimensions.
 \begin{itemize}
 \item {\bf Variable structuredness.} Let $\D$ be an \nbdd over a set of variables $\X$. Then $\D$ is \emph{free} (\nfbdd) if for every run $\pi$ of $\D$, no two distinct nodes in $\pi$ have the same label. Besides, $\D$ is {\em ordered} (\nobdd) if there exists a linear order $<$ on the set $\X$ of such that, if a node $u_1$ appears before a node $u_2$ in some run of $\D$, the label of $u_1$ is $X_1 \in \X$ and the label of $u_2$ is $X_2 \in \X$ , then $X_1 < X_2$. Notice that an $\nobdd$ is in particular an $\nfbdd$.
+  \antoine{I think nFBDDs are also called NROBPs in some papers, e.g.,
+    \cite{razgon2014no}.}
 
 \item {\bf Ambiguity level.} Let $\D$ be an \nbdd over a set of variables $\X$. Then $\D$ is {\em unambiguous} (\ubdd) if for every assignment $\as \in \assign(\X)$, there exists at most one accepting run of $\D$ that is consistent with $\as$. Moreover, $\D$ is {\em deterministic}, which is referred to as \bdd \citep{L59,W04}), if for every assignment $\as \in \assign(\X)$, there exists at most one run of $\D$ that is consistent with $\as$. 
 \end{itemize}
 The combination of these two dimensions gives rises to 9 different classes of nondeterministic binary decision diagrams, which are shown in Figure \ref{fig-bdd}.
 The most widely used models among these classes are the deterministic variants, i.e., binary decision diagrams (\bdd) \citep{L59}, free binary decision diagrams (\fbdd) \citep{FHS78,BCW80}, and ordered binary decision diagrams (\obdd) \citep{B86}. 
 
-\comm{Marcelo}{Indicate that in the case of deterministic BDD, every internal node is assumed to have one outgoing edge with label 1 and one outgoing edge with label 0}
-\comm{Antoine}{decision ratified :)}
-\comm{Mikaël}{Added this in the definition of $\nbdd$, need to update the figures and the example}
+%\comm{Marcelo}{Indicate that in the case of deterministic BDD, every internal node is assumed to have one outgoing edge with label 1 and one outgoing edge with label 0}
+%\comm{Antoine}{decision ratified :)}
+%\comm{Mikaël}{Added this in the definition of $\nbdd$, need to update the figures and the example}
 \begin{figure}
 \begin{center}
 \begin{tabular}{l|c|c|c|}\cline{2-4}
@@ -110,26 +114,37 @@ The most widely used models among these classes are the deterministic variants, 
 
 \begin{example}
 The \nbdd in Figure \ref{fig-nbdd-without-id} is ordered because every run in it conforms to the linear order $X < W < Z < Y$. On the other hand, the following \nbdd is free but not ordered:
-
-\end{example}
-
 \begin{center}
 \input{figures/nbdd-free}
 \end{center}
+\end{example}
 
-\paragraph*{Sharing.}
-If we disallow sharing (i.e., a internal nodes having multiple paths from the root), we get decision trees.
-An \nbdd $\D$ is a \emph{decision tree} (\ndt) if the underlying graph of $\D$ is a tree (ignoring the leaves).
-Unlike general diagrams, we can tractably rewrite decision trees to ensure that they are free.
+%\paragraph*{Sharing.}
 
-\paragraph*{Completing.}
-We can complete OBDDs\comm{Mikaël}{even nFBDDs} to make them complete. If not complete, we can adopt the zero-suppressed semantics or not.
+
+Nondeterministic binary decision
+diagrams have also been defined by extending BDDs with {\em or-nodes} \citep{ACMS20,DBSSWCH10}. An or-node $u$ in a BDD is an internal node such that: $u$ is labeled with the disjunction symbol $\vee$ instead of a variable, and the outgoing edges of $u$ are not labeled. Acceptance of a BDD with or-nodes is defined as for the case of BDDs; in particular, if a run goes through an or-node, then it chooses an outgoing edge of this or-node, which does not impose a restriction on the values assigned to variables.
+
+
+chooses an outgoing edge for each or-node without imposing a condition in the values assigned to variables
 
 The definition 
 TODO: cite bollig1999nondeterministic to justify the choice of notation (multiple outgoing edges chosen independently, instead of explicit OR-nodes); explain connection with the nondeterministic BDDs with or-gates, at least from amarilli2019conecting or bollig2010binary. Remark that having multiple initial nodes does not make a difference because you can just move a variable to the root.
 
-TODO: mention NROBPs
 
-TODO: mention smoothing, zero-suppressed semantics
 
-and decision trees. Notice that we have not included any class of unrestricted decision trees in the figure, as the repetition of variables in a run of a decision tree can be easily eliminated, so decision trees are assumed to be free.
+If we disallow sharing (i.e., a internal nodes having multiple paths from the root), we get decision trees.
+An \nbdd $\D$ is a \emph{decision tree} (\ndt) if the underlying graph of $\D$ is a tree (ignoring the leaves).
+Unlike general diagrams, we can tractably rewrite decision trees to ensure that they are free.
+
+
+\paragraph*{Completing.}
+\todo[inline]{Define completness: in every path from root to sink we must see all the variables.}
+We can complete nFBDDs \cite[Lemma 8.4]{ACMS20} to make them complete. If not complete, we can adopt the zero-suppressed semantics or not.
+
+The definition 
+TODO: cite bollig1999nondeterministic to justify the choice of notation (multiple outgoing edges chosen independently, instead of explicit OR-nodes); explain connection with the nondeterministic BDDs with or-gates, at least from amarilli2019conecting or bollig2010binary. Remark that having multiple initial nodes does not make a difference because you can just move a variable to the root.
+
+\paragraph*{Zero-suppressed semantics.}
+TODO: zero-suppressed semantics
+
